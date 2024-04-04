@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const healthRoutes= require('./routes/health')
 
 app.use(express.json());
 
@@ -24,6 +25,8 @@ app.get('/', (req, res) => {
 app.get('/gf', (req, res) => {
   res.send("Welcome to project Tech?Hostel");
 });
+
+app.use('/api/health',healthRoutes)
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
