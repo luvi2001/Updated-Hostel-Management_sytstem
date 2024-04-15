@@ -1,6 +1,6 @@
 const express =require('express')
 
-const {getUserByName,applyGatePass,verifyGatePass,approveGatePass,getGatePassesByNIC}= require('../controllers/secuiritycontroller')
+const {getUserByName,applyGatePass,verifyGatePass,deleteGatePassById,getGatePassesByNIC}= require('../controllers/secuiritycontroller')
 
 const router=express.Router()
 
@@ -12,8 +12,7 @@ router.post('/apply', applyGatePass);
 // Route for verifying a gate pass
 router.put('/verify/:id', verifyGatePass);
 
-// Route for approving a gate pass
-router.put('/approve/:id', approveGatePass);
+router.delete('/delete/:id', deleteGatePassById);
 
 router.get('/nic/:nicNumber',getGatePassesByNIC);
 module.exports= router

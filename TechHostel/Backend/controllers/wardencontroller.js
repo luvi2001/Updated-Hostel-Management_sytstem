@@ -42,5 +42,19 @@ const getUserByName = async (req, res) => {
     }
   };
 
+  const approveGatePass = async (req, res) => {
+    try {
+      const { nic } = req.params;
+      const gatePass = await GatePass.findById(nic);
+      if (!gatePass) {
+        return res.status(404).json({ error: 'Gate pass not found' });
+      }
+      gatePass.status = 'approved';
+      await gatePass.save();
+      res.json({ message: 'Gate pass approved successfully', gatePass });
+    } catch (error) {
+      res.status(500).json({ error: 'Something went wrong' });
+    }
+  };
 
-module.exports={registerProfile,getUserByName}
+module.exports={registerProfile,getUserByName,approveGatePass}

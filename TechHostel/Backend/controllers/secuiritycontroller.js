@@ -61,21 +61,19 @@ const verifyGatePass = async (req, res) => {
   }
 };
 
-// Controller for approving a gate pass
-const approveGatePass = async (req, res) => {
+const deleteGatePassById = async (req, res) => {
   try {
-    const { nic } = req.params;
-    const gatePass = await GatePass.findById(nic);
+    const { id } = req.params;
+    const gatePass = await GatePass.findById(id);
     if (!gatePass) {
       return res.status(404).json({ error: 'Gate pass not found' });
     }
-    gatePass.status = 'approved';
-    await gatePass.save();
-    res.json({ message: 'Gate pass approved successfully', gatePass });
+    await gatePass.remove();
+    res.json({ message: 'Gate pass deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' });
   }
 };
 
 
-  module.exports={getUserByName,approveGatePass,verifyGatePass,applyGatePass,getGatePassesByNIC}
+  module.exports={getUserByName,deleteGatePassById,verifyGatePass,applyGatePass,getGatePassesByNIC}
