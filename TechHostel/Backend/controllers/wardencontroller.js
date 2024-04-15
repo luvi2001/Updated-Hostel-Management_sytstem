@@ -27,7 +27,7 @@ const registerProfile= async(req,res) => {
 
 const getUserByName = async (req, res) => {
     try {
-      const name = req.params.name;
+      const {name} = req.body;
       // Find user by name in the database
       const user = await RegisterProfile.findOne({ name });
   

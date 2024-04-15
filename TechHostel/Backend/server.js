@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const app = express();
 const healthRoutes= require('./routes/health')
 const wardenRoutes=require('./routes/warden')
+const securityRoutes=require('./routes/security')
 
 app.use(express.json());
 
@@ -29,6 +30,7 @@ app.get('/gf', (req, res) => {
 
 app.use('/api/health',healthRoutes)
 app.use('/api/warden',wardenRoutes)
+app.use('/api/security',securityRoutes)
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
