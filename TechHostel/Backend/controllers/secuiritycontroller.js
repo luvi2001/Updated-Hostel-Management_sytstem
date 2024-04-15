@@ -1,5 +1,5 @@
 const RegisterProfile= require('../models/registermodel')
-
+const GatePass = require('../models/securitymodel');
 
 
 const getUserByName = async (req, res) => {
@@ -19,4 +19,63 @@ const getUserByName = async (req, res) => {
     }
   };
 
-  module.exports={getUserByName}
+
+  const getGatePassesByNIC = async (req, res) => {
+    try {
+      const { nicNumber } = req.params;
+      const gatePasses = await GatePass.find({ nic: nicNumber });
+      if (!gatePasses) {
+        return res.status(404).json({ error: 'No gate passes found for the given NIC number' });
+      }
+      res.json(gatePasses);
+    } catch (error) {
+      res.status(500).json({ error: 'Something went wrong' });
+    }
+  };
+
+// Controller for applying for a gate pass
+const applyGatePass = async (req, res) => {
+  try {
+    const { nic, reason } = req.body;
+    const newGatePass = new GatePass({ nic, reason });
+    await newGatePass.save();
+    res.status(201).json({ message: 'Gate pass applied successfully', gatePass: newGatePass });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
+// Controller for verifying a gate pass
+const verifyGatePass = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const gatePass = await GatePass.findById(id);
+    if (!gatePass) {
+      return res.status(404).json({ error: 'Gate pass not found' });
+    }
+    gatePass.status = 'verified';
+    await gatePass.save();
+    res.json({ message: 'Gate pass verified successfully', gatePass });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
+// Controller for approving a gate pass
+const approveGatePass = async (req, res) => {
+  try {
+    const { nic } = req.params;
+    const gatePass = await GatePass.findById(nic);
+    if (!gatePass) {
+      return res.status(404).json({ error: 'Gate pass not found' });
+    }
+    gatePass.status = 'approved';
+    await gatePass.save();
+    res.json({ message: 'Gate pass approved successfully', gatePass });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
+
+  module.exports={getUserByName,approveGatePass,verifyGatePass,applyGatePass,getGatePassesByNIC}
