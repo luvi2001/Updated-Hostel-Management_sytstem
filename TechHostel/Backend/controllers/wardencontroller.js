@@ -26,26 +26,26 @@ const registerProfile= async(req,res) => {
 
 
 const getUserByName = async (req, res) => {
-    try {
-      const {name} = req.body;
-      // Find user by name in the database
-      const user = await RegisterProfile.findOne({ name });
-  
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      res.status(200).json(user);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+  try {
+    const {name} = req.body;
+    // Find user by name in the database
+    const user = await RegisterProfile.findOne({ name });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  };
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
 
   const approveGatePass = async (req, res) => {
     try {
-      const { nic } = req.params;
-      const gatePass = await GatePass.findById(nic);
+      const { ID } = req.params;
+      const gatePass = await GatePass.findById(ID);
       if (!gatePass) {
         return res.status(404).json({ error: 'Gate pass not found' });
       }
