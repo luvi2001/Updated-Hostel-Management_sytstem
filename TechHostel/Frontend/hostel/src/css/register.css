@@ -4,8 +4,8 @@
     box-sizing: border-box;
   }
   body{
-    height: 100vh;
-    background: linear-gradient(#b70071, #003b6c);
+    height: 200vh;
+    background: linear-gradient(#081a35, #208be2);
   }
   .container{
     margin: 50px auto;

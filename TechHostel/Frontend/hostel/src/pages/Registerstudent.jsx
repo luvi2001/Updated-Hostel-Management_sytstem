@@ -1,8 +1,11 @@
 import {useState} from "react";
 import * as Yup from "yup";
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import '../css/register.css'
 import axios from 'axios';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 
 const Registerstudent = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +19,25 @@ const Registerstudent = () => {
     parentName: "",
     phoneNumber: "",
   });
+
+
+  const [loader, setLoader] = useState(false);
+
+  const downloadPDF = () =>{
+    const capture = document.querySelector('.actual-receipt');
+    setLoader(true);
+    html2canvas(capture).then((canvas)=>{
+      const imgData = canvas.toDataURL('img/png');
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
+      setLoader(false);
+      doc.save('receipt.pdf');
+    })
+  }
+
+
 
   const [errors, setErrors] = useState({});
 
@@ -222,14 +244,20 @@ const Registerstudent = () => {
       
       <button type="submit">Submit</button>
     </form>
-    <div className="terms">
-                <input type="checkbox"  id="checkbox" />
-                <label htmlFor="checkbox">I agree to the <a href="#">Terms & Condition</a></label>
-            </div>
-            <div className="member">
-                Already have an account? <Link to='/login'>Login</Link>
-            </div>
-    </div>
+
+    <button
+                className="receipt-modal-download-button"
+                onClick={downloadPDF}
+                disabled={!(loader===false)}
+              >
+                {loader?(
+                  <span>Downloading</span>
+                ):(
+                  <span>Download</span>
+                )}
+
+              </button> 
+   </div>
   );
 };
 
