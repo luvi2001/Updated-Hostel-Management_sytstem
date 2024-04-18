@@ -65,9 +65,6 @@ const deleteGatePassById = async (req, res) => {
   try {
     const { id } = req.params;
     await GatePass.findByIdAndDelete(id);
-    if (!gatePass) {
-      return res.status(404).json({ error: 'Gate pass not found' });
-    }
     
     res.json({ message: 'Gate pass deleted successfully' });
   } catch (error) {
