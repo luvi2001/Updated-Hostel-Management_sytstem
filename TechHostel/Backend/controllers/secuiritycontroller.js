@@ -1,4 +1,4 @@
-const RegisterProfile= require('../models/registermodel')
+const RegisterProfile= require('../models/usermodel')
 const GatePass = require('../models/securitymodel');
 
 

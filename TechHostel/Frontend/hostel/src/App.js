@@ -1,7 +1,9 @@
-import Register from'./pages/Register'
-import './App.css';
+//import Register from'./pages/Register'
+//import './App.css';
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+//import Formyup from './pages/Formyup';
+import Registerstudent from "./pages/Registerstudent";
 
 function App() {
   return (
@@ -9,7 +11,7 @@ function App() {
       <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Register />} />
+          <Route path="/" element={<Registerstudent />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -16,8 +16,8 @@ const registerSchema=new Schema({
         type:Number,
         required:true
     },
-    address:{
-        type: String,
+    birthDate:{
+        type: Date,
         required:true
     },
     nic:{
@@ -32,7 +32,7 @@ const registerSchema=new Schema({
         type: String,
         required:true
     },
-    mobileNo:{
+    phoneNumber:{
         type: String,
         required:true,
         unique:true

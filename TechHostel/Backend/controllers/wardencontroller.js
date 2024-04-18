@@ -1,18 +1,18 @@
-const RegisterProfile= require('../models/registermodel')
+const RegisterProfile= require('../models/usermodel')
 
 
 const registerProfile= async(req,res) => {
     try{
-        const {name,email,age,address,nic,password,parentName,mobileNo}=req.body;
+        const {name,email,age,birthDate,nic,password,parentName,phoneNumber}=req.body;
         const newProfile=new RegisterProfile({
             name,
             email,
             age,
-            address,
+            birthDate,
             nic,
             password,
             parentName,
-            mobileNo
+            phoneNumber
             
         });
 
@@ -20,7 +20,7 @@ const registerProfile= async(req,res) => {
         res.status(201).json({ message: 'Register profile created', data: newProfile });
     }
     catch(err){
-        cosole.log(err)
+        console.log(err)
     }
 }
 
