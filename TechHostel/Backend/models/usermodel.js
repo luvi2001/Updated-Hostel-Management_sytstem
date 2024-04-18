@@ -40,4 +40,4 @@ const registerSchema=new Schema({
 
 })
 
-module.exports=mongoose.model('Register',registerSchema)
+module.exports=mongoose.model('hostler',registerSchema)
