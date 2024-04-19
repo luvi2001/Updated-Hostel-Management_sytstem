@@ -1,4 +1,5 @@
 const RegisterProfile= require('../models/usermodel')
+const GatePass=require('../models/securitymodel')
 
 
 const registerProfile= async(req,res) => {
@@ -27,7 +28,7 @@ const registerProfile= async(req,res) => {
 
 const getUserByName = async (req, res) => {
   try {
-    const {name} = req.body;
+    const { name } = req.params;
     // Find user by name in the database
     const user = await RegisterProfile.findOne({ name });
 
@@ -42,10 +43,22 @@ const getUserByName = async (req, res) => {
   }
 };
 
+const getAllGatePasses = async (req, res) => {
+  try {
+    // Fetch all gate passes from the database
+    const gatePasses = await GatePass.find();
+    
+    res.status(200).json(gatePasses);
+  } catch (error) {
+    console.error("Error fetching gate passes:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
   const approveGatePass = async (req, res) => {
     try {
-      const { ID } = req.params;
-      const gatePass = await GatePass.findById(ID);
+      const { id } = req.params;
+      const gatePass = await GatePass.findById(id);
       if (!gatePass) {
         return res.status(404).json({ error: 'Gate pass not found' });
       }
@@ -57,4 +70,4 @@ const getUserByName = async (req, res) => {
     }
   };
 
-module.exports={registerProfile,getUserByName,approveGatePass}
+module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses}

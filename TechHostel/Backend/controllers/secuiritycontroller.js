@@ -20,6 +20,8 @@ const getUserByName = async (req, res) => {
   };
 
 
+
+
   const getGatePassesByNIC = async (req, res) => {
     try {
       const { nicNumber } = req.params;
@@ -36,8 +38,8 @@ const getUserByName = async (req, res) => {
 // Controller for applying for a gate pass
 const applyGatePass = async (req, res) => {
   try {
-    const { nic, reason } = req.body;
-    const newGatePass = new GatePass({ nic, reason });
+    const { applicantName,nic, reason } = req.body;
+    const newGatePass = new GatePass({applicantName, nic, reason });
     await newGatePass.save();
     res.status(201).json({ message: 'Gate pass applied successfully', gatePass: newGatePass });
   } catch (error) {

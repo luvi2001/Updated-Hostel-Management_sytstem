@@ -4,6 +4,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 //import Formyup from './pages/Formyup';
 import Registerstudent from "./pages/Registerstudent";
+import SearchStudent from "./pages/Searchstudent";
+import Gatepasses from "./pages/Gatepasses";
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Registerstudent />} />
+          <Route path="/search" element={<SearchStudent />} />
+          <Route path="/gp" element={<Gatepasses />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,15 +1,17 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import * as Yup from "yup";
 //import { Link } from 'react-router-dom'
 import '../css/register.css'
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Navbar from "../components/Navbar";
+import React from "react";
 
 
 const Registerstudent = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
+    name: "",
     email: "",
     age:"",
     birthDate: "",
@@ -20,29 +22,32 @@ const Registerstudent = () => {
     phoneNumber: "",
   });
 
+  const pdfRef = useRef();
 
-  const [loader, setLoader] = useState(false);
+  const downloadPDF = () => {
+    const input = pdfRef.current;
 
-  const downloadPDF = () =>{
-    const capture = document.querySelector('.actual-receipt');
-    setLoader(true);
-    html2canvas(capture).then((canvas)=>{
-      const imgData = canvas.toDataURL('img/png');
-      const doc = new jsPDF('p', 'mm', 'a4');
-      const componentWidth = doc.internal.pageSize.getWidth();
-      const componentHeight = doc.internal.pageSize.getHeight();
-      doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
-      setLoader(false);
-      doc.save('receipt.pdf');
-    })
-  }
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4', true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save('invoice.pdf');
+    });
+  };
 
 
 
   const [errors, setErrors] = useState({});
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("First Name is Required"),
+    name: Yup.string().required("First Name is Required"),
     parentName: Yup.string().required("Parent Name is Required"),
     email: Yup.string()
       .required("Email is Required")
@@ -77,7 +82,7 @@ const Registerstudent = () => {
 
 
     const nonParsed = {
-      firstName: "Piyush",
+      name: "Piyush",
       email: "piyush@example.com",
       age: "18",
       birthDate: "2024-02-12",
@@ -120,18 +125,23 @@ const Registerstudent = () => {
  
 
   return (
-    <div className="container">
+    <>
+    
+			<Navbar/>
+	
+    <div ref={pdfRef} className="cn">
+    <div className="container" >
     <form className="form" onSubmit={handleSubmit}>
       <div>
         <label>First Name:</label>
         <input
           type="text"
-          name="firstName"
-          value={formData.firstName}
+          name="name"
+          value={formData.name}
           placeholder="Enter your first name"
           onChange={handleChange}
         />
-        {errors.firstName && <div className="error">{errors.firstName}</div>}
+        {errors.name && <div className="error">{errors.name}</div>}
       </div>
 
       <div>
@@ -237,27 +247,16 @@ const Registerstudent = () => {
         )}
       </div>
      
-      
-      
-
-      
-      
-      <button type="submit">Submit</button>
+     <button type="submit">Submit</button>
+    
     </form>
-
-    <button
-                className="receipt-modal-download-button"
-                onClick={downloadPDF}
-                disabled={!(loader===false)}
-              >
-                {loader?(
-                  <span>Downloading</span>
-                ):(
-                  <span>Download</span>
-                )}
-
-              </button> 
+   
    </div>
+   </div>
+   <div>
+   <button onClick={downloadPDF}>Download</button>
+   </div>
+   </>
   );
 };
 
