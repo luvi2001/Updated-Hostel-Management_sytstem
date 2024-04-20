@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Registerstudent from "./pages/Registerstudent";
 import SearchStudent from "./pages/Searchstudent";
 import Gatepasses from "./pages/Gatepasses";
+import Allstudents from "./pages/Allstudents";
+import StudentDetails from "./pages/StudentDetails";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/" element={<Registerstudent />} />
           <Route path="/search" element={<SearchStudent />} />
           <Route path="/gp" element={<Gatepasses />} />
+          <Route path="/allstudents" element={<Allstudents />} />
+          <Route path="/student/:id" element={<StudentDetails />} />
         </Routes>
       </BrowserRouter>
     </>

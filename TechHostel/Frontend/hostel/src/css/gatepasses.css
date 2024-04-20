@@ -1,0 +1,54 @@
+/* gatepasses.css */
+
+/* Container styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Gate pass styles */
+  .gate-pass {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Header styles */
+  .gate-pass h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  /* Status styles */
+  .status {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Approve button styles */
+  .approve-button {
+    background-color: rgb(17, 67, 143);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .approve-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Horizontal line styles */
+  .hr-line {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+  }
+  

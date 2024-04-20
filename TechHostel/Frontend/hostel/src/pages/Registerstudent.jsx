@@ -48,13 +48,35 @@ const Registerstudent = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("First Name is Required"),
+
     parentName: Yup.string().required("Parent Name is Required"),
+
     email: Yup.string()
       .required("Email is Required")
       .email("Invalid email format"),
+
+
+      nic: Yup.string()
+      .required("NIC is required")
+      .test(
+          "is-valid-nic",
+          "NIC should match one of the formats",
+          value => {
+              // Regular expressions for NIC formats
+              const regex1 = /^\d{9}[vVxX]?$/;
+              const regex2 = /^\d{12}$/;
+  
+              // Check if the value matches at least one of the patterns
+              return regex1.test(value) || regex2.test(value);
+          }
+      ),
+  
+  
+
     phoneNumber: Yup.string()
       .matches(/^\d{10}$/, "Phone Number must be 10 digits")
       .required(),
+
     password: Yup.string()
       .required("Password is required")
       .min(8, "Password must be at least 8 characters")
@@ -65,15 +87,18 @@ const Registerstudent = () => {
       .matches(/[0-9]/, "Password must contain at least one number")
       .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
       .matches(/[a-z]/, "Password must contain at least one lowercase letter"),
+
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Confirm password is required"),
+
     age: Yup.number()
       .typeError("Age must be a number")
       .min(18, "You must be at least 18 years old")
       .max(100, "You cannot be older than 100 years")
       .required("Age is required"),
     birthDate: Yup.date().required("Date of birth is required"),
+
   });
 
   const handleSubmit = async (e) => {
@@ -128,7 +153,7 @@ const Registerstudent = () => {
     <>
     
 			<Navbar/>
-	
+	  <br/><br/>
     <div ref={pdfRef} className="cn">
     <div className="container" >
     <form className="form" onSubmit={handleSubmit}>

@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+
+
+
+
+.student-details-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .student-details-container h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-family: "Fjalla One", sans-serif;
+    text-align: center;
+    color: blue;
+  }
+  
+  .student-details-container p {
+    margin: 5px 0;
+    border-radius: 5px solid rgb(15, 14, 14);
+    background-color: antiquewhite;
+  }
+
+  label{
+    font-size: 100%;
+    font-weight: bolder;
+    font-stretch: normal;
+  }
+  
+  /* Style individual detail fields */
+  .student-details-container .detail-label {
+    font-weight: bold;
+  }
+  
+  .student-details-container .detail-value {
+    margin-left: 10px;
+  }
+  

@@ -43,10 +43,61 @@ const getUserByName = async (req, res) => {
   }
 };
 
+const getUserByNIC = async (req, res) => {
+  try {
+    const { nic } = req.params;
+    // Find user by NIC in the database
+    const user = await RegisterProfile.findOne({ nic });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+const getUserByID = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Find user by name in the database
+    const user = await RegisterProfile.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+
+
+
+
 const getAllGatePasses = async (req, res) => {
   try {
     // Fetch all gate passes from the database
     const gatePasses = await GatePass.find();
+    
+    res.status(200).json(gatePasses);
+  } catch (error) {
+    console.error("Error fetching gate passes:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getAllStudents = async (req, res) => {
+  try {
+    // Fetch all gate passes from the database
+    const gatePasses = await RegisterProfile.find();
     
     res.status(200).json(gatePasses);
   } catch (error) {
@@ -70,4 +121,19 @@ const getAllGatePasses = async (req, res) => {
     }
   };
 
-module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses}
+  const dnapproveGatePass = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const gatePass = await GatePass.findById(id);
+      if (!gatePass) {
+        return res.status(404).json({ error: 'Gate pass not found' });
+      }
+      gatePass.status = 'not_verified';
+      await gatePass.save();
+      res.json({ message: 'Gate pass approved successfully', gatePass });
+    } catch (error) {
+      res.status(500).json({ error: 'Something went wrong' });
+    }
+  };
+
+module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC}

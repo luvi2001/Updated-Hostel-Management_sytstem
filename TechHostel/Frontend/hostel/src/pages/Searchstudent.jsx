@@ -13,8 +13,14 @@ function SearchStudent() {
     setLoading(true);
     setError(null);
     try {
-        const response = await axios.get(`/api/warden/search/${searchTerm}`);
-
+      let response;
+      // Check if the search term looks like a NIC (e.g., 9 digits followed by optional 'V', 'v', 'X', or 'x',
+      // or 12 digits)
+      if (/^\d{9}[vVxX]?$/.test(searchTerm) || /^\d{12}$/.test(searchTerm)) {
+        response = await axios.get(`/api/warden/searchnic/${searchTerm}`);
+      } else {
+        response = await axios.get(`/api/warden/search/${searchTerm}`);
+      }
       setStudent(response.data);
     } catch (error) {
       console.error("Error searching for student:", error);
@@ -30,13 +36,13 @@ function SearchStudent() {
 
   return (
     <>
-      <Navbar />
+      <Navbar /><br/><br/>
       <div className="container">
         <h2>Search Student</h2>
         <div>
           <input
             type="text"
-            placeholder="Enter student name"
+            placeholder="Enter student name or nic"
             value={searchTerm}
             onChange={handleChange}
           />
@@ -47,7 +53,7 @@ function SearchStudent() {
         </div>
         {error && <div>Error: {error}</div>}
         {student && (
-          <div>
+          <div className="tb">
             <h3>Student Details</h3>
             <table>
               <tbody>

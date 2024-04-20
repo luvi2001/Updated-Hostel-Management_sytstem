@@ -15,7 +15,7 @@ function Navbar() {
 			    <Link to="/">home</Link>
 				<Link to="/search">search student</Link>
 				<Link to="/gp">View gatepasses</Link>
-				<a href="/#">warden</a>
+				<Link to="/allstudents">View students</Link>
 				<a href="/#">security</a>
 				<a href="/#">health</a>
 				<a href="/#">food</a>
