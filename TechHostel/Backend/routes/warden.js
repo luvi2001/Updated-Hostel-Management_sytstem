@@ -1,6 +1,6 @@
 const express =require('express')
 
-const {registerProfile,getUserByName,getAllGatePasses,approveGatePass,dnapproveGatePass, getAllStudents, getUserByID, getUserByNIC}= require('../controllers/wardencontroller')
+const {registerProfile,getUserByName,getAllGatePasses,approveGatePass,dnapproveGatePass, getAllStudents, getUserByID, getUserByNIC, createLogin, loginValidate}= require('../controllers/wardencontroller')
 
 const router=express.Router()
 
@@ -12,5 +12,7 @@ router.put('/approve/:id',approveGatePass)
 router.put('/dnapprove/:id',dnapproveGatePass)
 router.get('/getstudents',getAllStudents)
 router.get('/getstudent/:id',getUserByID)
+router.post('/createlogin',createLogin)
+router.post('/validatelogin',loginValidate)
 
 module.exports= router

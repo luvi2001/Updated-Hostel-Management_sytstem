@@ -63,7 +63,8 @@ function StudentDetails() {
   return (
     <>
     <Navbar /><br/><br/><br/>
-    <div className="student-details-container" ref={pdfRef}>
+    <div className="student-details-container">
+      <div  ref={pdfRef}>
       <h2>Student Details</h2>
 
       <label>Name</label>
@@ -86,11 +87,13 @@ function StudentDetails() {
 
       <label>DOB</label>
       <p>{student.birthDate}</p>
-
-    </div>
-    <div>
+      </div>
+      <div className="btn">
    <button onClick={downloadPDF}>Download</button>
    </div>
+   </div>
+    
+   
     </>
   );
 }

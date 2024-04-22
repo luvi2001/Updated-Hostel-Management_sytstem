@@ -13,9 +13,8 @@ function Navbar() {
 			<h3>HOSTEL MANANGEMENT SYSTEM</h3>
 			<nav ref={navRef}>
 			    <Link to="/">Register hostler</Link>
-				<Link to="/search">Search student</Link>
-				<Link to="/gp">View gatepasses</Link>
-				<Link to="/allstudents">View students</Link>
+				<Link to="/securitysearch">Search student</Link>
+				<Link to="/securityhome">Gate passes</Link>
 				<Link to="/login">login</Link>
 				
 				

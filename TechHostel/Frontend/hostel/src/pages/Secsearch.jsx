@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
+import Navbar2 from "../components/Navbar2";
 import '../css/table.css'
 
 function SearchStudent() {
@@ -34,9 +34,20 @@ function SearchStudent() {
     setSearchTerm(e.target.value);
   };
 
+  const handleStatusChange = async (status) => {
+    try {
+      await axios.put(`/api/security/updatestatus/${student._id}`, { status });
+      // Update the student status locally
+      setStudent(prevStudent => ({ ...prevStudent, status }));
+    } catch (error) {
+      console.error("Error updating student status:", error);
+      setError("An error occurred while updating student status.");
+    }
+  };
+
   return (
     <>
-      <Navbar /><br/><br/>
+      <Navbar2 /><br/><br/>
       <div className="container">
         <h2>Search Student</h2>
         <div>
@@ -86,9 +97,16 @@ function SearchStudent() {
                   <td>{student.phoneNumber}</td>
                 </tr>
                 <tr>
-                  <td>Status</td>
-                  <td>{student.status}</td>
+                  <td>Status:</td>
+                
+
+                
+                  <td>{student.status === "inside" ? "Inside Hostel" : "Outside Hostel"}</td>
                 </tr>
+                    <button onClick={() => handleStatusChange(student.status === "inside" ? "outside" : "inside")}>
+                      {student.status === "inside" ? "Set as Outside" : "Set as Inside"}
+                    </button>
+                
               </tbody>
             </table>
           </div>

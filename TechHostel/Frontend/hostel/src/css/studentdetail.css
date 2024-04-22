@@ -42,3 +42,14 @@
     margin-left: 10px;
   }
   
+  .btn button{
+    width: 90%;
+    border: none;
+    font-size: 1rem;
+    margin-top: 1.8rem;
+    padding: 10px 0;
+    border-radius: 20px;
+    outline: none;
+    color: #fff;
+    background: rgb(17, 67, 143);
+  }

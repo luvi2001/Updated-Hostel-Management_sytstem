@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom"; // Import Link for routing
 import Navbar from "../components/Navbar";
 import '../css/allstudents.css'
+import Footer from '../components/Footer'
 
 function Allstudents() {
   const [students, setStudents] = useState([]);
@@ -41,7 +42,8 @@ function Allstudents() {
             </Link>
           </div>
       ))}
-    </div>
+    </div><br/><br/>
+    <Footer/>
     </>
   );
 }

@@ -43,6 +43,7 @@ const applyGatePass = async (req, res) => {
     await newGatePass.save();
     res.status(201).json({ message: 'Gate pass applied successfully', gatePass: newGatePass });
   } catch (error) {
+
     res.status(500).json({ error: 'Something went wrong' });
   }
 };
@@ -75,6 +76,38 @@ const deleteGatePassById = async (req, res) => {
   }
 };
 
+const dnverifyGatePass = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const gatePass = await GatePass.findById(id);
+    if (!gatePass) {
+      return res.status(404).json({ error: 'Gate pass not found' });
+    }
+    gatePass.status = 'not_verified';
+    await gatePass.save();
+    res.json({ message: 'Gate pass approved successfully', gatePass });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
+const updateStudentStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updatedStudent = await RegisterProfile.findByIdAndUpdate(id, { status }, { new: true });
+
+    res.status(200).json({ message: "Student status updated successfully", student: updatedStudent });
+  } catch (error) {
+    console.error("Error updating student status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 
-  module.exports={getUserByName,deleteGatePassById,verifyGatePass,applyGatePass,getGatePassesByNIC}
+
+
+
+
+  module.exports={getUserByName,deleteGatePassById,verifyGatePass,applyGatePass,getGatePassesByNIC,dnverifyGatePass,updateStudentStatus}
