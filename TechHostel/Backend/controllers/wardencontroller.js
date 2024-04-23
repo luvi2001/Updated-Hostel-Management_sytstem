@@ -1,7 +1,8 @@
 const RegisterProfile= require('../models/usermodel')
 const GatePass=require('../models/securitymodel')
-const Login=require('../models/loginmodel')
-const bcrypt = require('bcrypt');
+//const Login=require('../models/loginmodel')
+//const bcrypt = require('bcrypt');
+const assignTask=require('../models/tasks')
 
 
 const registerProfile= async(req,res) => {
@@ -87,8 +88,41 @@ const getUserByID = async (req, res) => {
 };
 
 
+const addTasks= async (req, res) => {
+  try {
+    // Extract form data from request body
+    const { task_name, message } = req.body;
+
+    // Create a new FormData instance with the provided data
+    const newFormData = new assignTask({
+      task_name,
+      message,
+    });
+
+    // Save the new FormData instance to the database
+    await newFormData.save();
+
+    // Send a success response
+    res.status(201).json({ success: true, message: 'Form data saved successfully' });
+  } catch (error) {
+    // If an error occurs, send an error response
+    console.error('Error:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while saving form data' });
+  }
+};
 
 
+const getAllTasks = async (req, res) => {
+  try {
+    // Fetch all gate passes from the database
+    const tasks = await assignTask.find();
+    
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error("Error fetching gate passes:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 const getAllGatePasses = async (req, res) => {
   try {
@@ -144,4 +178,4 @@ const getAllStudents = async (req, res) => {
     }
   };
 
-module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC}
+module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC,addTasks,getAllTasks}

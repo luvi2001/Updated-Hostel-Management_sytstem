@@ -8,6 +8,9 @@ import StudentDetails from "./pages/StudentDetails";
 import Loginpage from "./pages/Loginpage";
 import Verfiygp from "./pages/Verfiygp";
 import Secsearch from "./pages/Secsearch";
+import Paymentmanagement from "./pages/Paymentmanagment";
+import Sendmail from "./pages/Sendmail";
+import Alltasks from "./pages/Alltasks";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
           <Route path="/" element={<Loginpage />} />
           <Route path="/securityhome" element={<Verfiygp />} />
           <Route path="/securitysearch" element={<Secsearch />} />
+          <Route path="/payment" element={<Paymentmanagement />} />
+          <Route path="/assigntask" element={<Sendmail />} />
+          <Route path="/tasksall" element={<Alltasks />} />
         </Routes>
       </BrowserRouter>
     </>

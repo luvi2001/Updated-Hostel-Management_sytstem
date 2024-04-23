@@ -16,6 +16,7 @@ function Navbar() {
 				<Link to="/search">Search student</Link>
 				<Link to="/gp">View gatepasses</Link>
 				<Link to="/allstudents">View students</Link>
+				<Link to="/assigntask">Assign task</Link>
 				
 		
 				

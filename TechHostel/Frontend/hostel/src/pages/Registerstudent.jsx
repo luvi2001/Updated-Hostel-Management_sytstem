@@ -5,6 +5,7 @@ import '../css/register.css'
 import axios from 'axios';
 import Navbar from "../components/Navbar";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -21,6 +22,8 @@ const Registerstudent = () => {
     phoneNumber: "",
   });
 
+
+  const navigate = useNavigate();
   
 
 
@@ -108,9 +111,32 @@ const Registerstudent = () => {
     try {
         await validationSchema.validate(formData, { abortEarly: false });
         const response = await axios.post('/api/warden/register', formData);
-        console.log('Form submitted:', response.data);
+        window.alert('Registration sucessful')
+
+        const { name, nic } = formData;
+
+        // Send request to create ewallet entry
+        const ewalletData = { name, nic };
+        const ewalletResponse = await axios.post('/api/payment/createewallet', ewalletData);
+        window.alert('E-wallet created successfully');
+
+
+        const expensesData = { name, nic };
+        const expenseResponse = await axios.post('/api/payment/createexpense', expensesData);
+        window.alert('Expenses created successfully');
+        
+        navigate('/register')
+    
         // Reset errors state
         setErrors({});
+        
+        // Navigate to another page if needed
+        // navigate('/some-other-page');
+    
+        console.log('Form submitted:', response.data);
+        console.log('E-wallet created:', ewalletResponse.data);
+        console.log('Expense created:', expenseResponse.data);
+
       } catch (error) {
         const newErrors = {};
         error.inner.forEach((err) => {
@@ -190,7 +216,7 @@ const Registerstudent = () => {
       </div>
 
       <div>
-        <label>NIC:</label>
+        <label>NIC:</label><br/>
         <input
           type="text"
           name="nic"
@@ -259,8 +285,6 @@ const Registerstudent = () => {
      <button type="submit">Submit</button>
     
     </form>
-
-    <div className="btn"><button>download</button></div>
    
    </div>
    </div>
