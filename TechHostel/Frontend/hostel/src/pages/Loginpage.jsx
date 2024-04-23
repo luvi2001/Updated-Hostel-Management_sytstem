@@ -15,18 +15,20 @@ const Loginpage = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('/api/warden/validatelogin', { email, password });
+      const response = await axios.post('/api/auth/validatelogin', { email, password });
       
       if (response.data.message === 'Warden login') {
         // Redirect to the desired route
-        navigate("/"); // Replace '/dashboard' with the desired route
+        navigate("/register"); // Replace '/dashboard' with the desired route
+        window.alert('Warden login');
       }
-      else if(response.data.message === 'Warden login'){
+      else if(response.data.message === 'Security login'){
         navigate("/securityhome");
+        window.alert('Security login');
       }
 
       // Show a pop-up message for successful login
-      window.alert('Warden login');
+      
 
       // Redirect to dashboard or any other page upon successful login
       // Example: history.push('/dashboard');

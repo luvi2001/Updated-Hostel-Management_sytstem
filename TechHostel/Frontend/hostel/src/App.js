@@ -1,8 +1,5 @@
-//import Register from'./pages/Register'
-//import './App.css';
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import Formyup from './pages/Formyup';
 import Registerstudent from "./pages/Registerstudent";
 import SearchStudent from "./pages/Searchstudent";
 import Gatepasses from "./pages/Gatepasses";
@@ -18,12 +15,12 @@ function App() {
       <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Registerstudent />} />
+          <Route path="/register" element={<Registerstudent />} />
           <Route path="/search" element={<SearchStudent />} />
           <Route path="/gp" element={<Gatepasses />} />
           <Route path="/allstudents" element={<Allstudents />} />
           <Route path="/student/:id" element={<StudentDetails />} />
-          <Route path="/login" element={<Loginpage />} />
+          <Route path="/" element={<Loginpage />} />
           <Route path="/securityhome" element={<Verfiygp />} />
           <Route path="/securitysearch" element={<Secsearch />} />
         </Routes>

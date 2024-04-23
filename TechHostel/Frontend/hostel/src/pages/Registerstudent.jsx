@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import React from "react";
 
 
+
 const Registerstudent = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -134,7 +135,8 @@ const Registerstudent = () => {
   return (
     <>
     
-			<Navbar/>
+		<Navbar />
+    
 	  <br/><br/>
     <div  className="cn">
     <div className="container" >
