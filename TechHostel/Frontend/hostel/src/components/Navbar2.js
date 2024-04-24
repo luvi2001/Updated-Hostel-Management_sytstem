@@ -24,6 +24,7 @@ function Navbar() {
 			    
 				<Link to="/securitysearch">Search student</Link>
 				<Link to="/securityhome">Gate passes</Link>
+				<Link to="/mail">Send mail</Link>
 				<button className="logout-button" onClick={handleLogout}>
                     <FontAwesomeIcon icon={faSignOutAlt} />
                 </button>

@@ -56,8 +56,14 @@ const verifyGatePass = async (req, res) => {
     if (!gatePass) {
       return res.status(404).json({ error: 'Gate pass not found' });
     }
+
+   if (gatePass.status === 'approved') {
+      // Update the gate pass status to 'approved'
     gatePass.status = 'verified';
     await gatePass.save();
+    
+    }
+
     res.json({ message: 'Gate pass verified successfully', gatePass });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' });
