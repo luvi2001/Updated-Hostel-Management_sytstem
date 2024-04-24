@@ -11,6 +11,7 @@ import Secsearch from "./pages/Secsearch";
 import Paymentmanagement from "./pages/Paymentmanagment";
 import Sendmail from "./pages/Sendmail";
 import Alltasks from "./pages/Alltasks";
+import Mail from "./pages/Mail";
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
           <Route path="/payment" element={<Paymentmanagement />} />
           <Route path="/assigntask" element={<Sendmail />} />
           <Route path="/tasksall" element={<Alltasks />} />
-          
+          <Route path="/mail" element={<Mail />} />
         </Routes>
       </BrowserRouter>
     </>
