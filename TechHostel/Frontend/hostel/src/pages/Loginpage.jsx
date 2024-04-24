@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../css/register.css';
 import { useNavigate } from "react-router-dom";
+import Footer from '../components/Footer';
 
 
 
@@ -17,6 +18,10 @@ const Loginpage = () => {
     try {
       const response = await axios.post('/api/auth/validatelogin', { email, password });
       
+      const { token } = response.data;
+      // Set session token in browser storage
+      window.sessionStorage.setItem('token', token);
+
       if (response.data.message === 'Warden login') {
         // Redirect to the desired route
         navigate("/register"); // Replace '/dashboard' with the desired route
@@ -27,11 +32,13 @@ const Loginpage = () => {
         window.alert('Security login');
       }
 
-      // Show a pop-up message for successful login
-      
+      else if(response.data.message === 'Paymentstaff login'){
+        navigate("/payment");
+        window.alert('Paymentstaff login');
+      }
 
-      // Redirect to dashboard or any other page upon successful login
-      // Example: history.push('/dashboard');
+
+      
     } catch (err) {
       setError(err.response.data.error);
     }
@@ -64,7 +71,8 @@ const Loginpage = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-    </div>
+    </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <Footer/>
     </>
   );
 };

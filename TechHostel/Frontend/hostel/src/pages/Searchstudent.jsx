@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import '../css/table.css'
+import Footer from "../components/Footer";
 
 function SearchStudent() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +22,11 @@ function SearchStudent() {
       } else {
         response = await axios.get(`/api/warden/search/${searchTerm}`);
       }
+      if (response.data.message === 'Student not found') {
+        // Redirect to the desired route
+        
+        window.alert('Student not found');
+      }
       setStudent(response.data);
     } catch (error) {
       console.error("Error searching for student:", error);
@@ -37,6 +43,7 @@ function SearchStudent() {
   return (
     <>
       <Navbar /><br/><br/>
+      <div>
       <div className="container">
         <h2>Search Student</h2>
         <div>
@@ -92,8 +99,10 @@ function SearchStudent() {
               </tbody>
             </table>
           </div>
+         
         )}
-      
+       </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+       <Footer/>
     </>
   );
 }

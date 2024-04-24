@@ -12,6 +12,7 @@ import Paymentmanagement from "./pages/Paymentmanagment";
 import Sendmail from "./pages/Sendmail";
 import Alltasks from "./pages/Alltasks";
 
+
 function App() {
   return (
     <div className="App">
@@ -29,6 +30,7 @@ function App() {
           <Route path="/payment" element={<Paymentmanagement />} />
           <Route path="/assigntask" element={<Sendmail />} />
           <Route path="/tasksall" element={<Alltasks />} />
+          
         </Routes>
       </BrowserRouter>
     </>

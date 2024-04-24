@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import "../css/gatepasses.css"; // Import the CSS file
+import Footer from "../components/Footer";
 
 function Gatepasses() {
   const [gatePasses, setGatePasses] = useState([]);
@@ -26,19 +27,22 @@ function Gatepasses() {
 
   const handleApprove = async (gatePassId) => {
     try {
-      await axios.put(`/api/warden/approve/${gatePassId}`, { status: "approved" });
-      // After updating status, refetch gate passes to update the UI
-      fetchGatePasses();
+      const response = await axios.put(`/api/warden/approve/${gatePassId}`, { status: "approved" });
+      
+        fetchGatePasses(); // Refetch gate passes to update the UI
+      
     } catch (error) {
       console.error("Error approving gate pass:", error);
       setError("An error occurred while approving the gate pass.");
     }
   };
+  
 
   const handleDnApprove = async (gatePassId) => {
     try {
       await axios.put(`/api/warden/dnapprove/${gatePassId}`, { status: "approved" });
       // After updating status, refetch gate passes to update the UI
+      
       fetchGatePasses();
     } catch (error) {
       console.error("Error approving gate pass:", error);
@@ -59,6 +63,8 @@ function Gatepasses() {
             <p>NIC: {gatePass.nic}</p>
             <p>Reason: {gatePass.reason}</p>
             <p className="status">Status: {gatePass.status}</p>
+            <p>Assigned At: {new Date(gatePass.createdAt).toLocaleString()}</p>
+            <p>Updated At: {new Date(gatePass.updatedAt).toLocaleString()}</p>
             {gatePass.status !== "approved" && (
               <button className="approve-button" onClick={() => handleApprove(gatePass._id)}>
                 Approve
@@ -71,7 +77,8 @@ function Gatepasses() {
             <hr className="hr-line" />
           </div>
         ))}
-      </div>
+      </div><br/><br/><br/><br/><br/><br/><br/><br/>
+      <Footer/> 
     </>
   );
 }

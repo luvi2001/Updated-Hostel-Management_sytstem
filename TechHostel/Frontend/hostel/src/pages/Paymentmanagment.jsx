@@ -4,6 +4,8 @@ import axios from "axios";
 import FormTable from '../components/Formtable'
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Navbar3 from "../components/Navbar3";
+import Footer from '../components/Footer';
 
 
 axios.defaults.baseURL = "http://localhost:8000/"
@@ -73,9 +75,9 @@ const Paymentmanagement=()=> {
   };
 
   const handleDelete = async (id) => {
-    const data = await axios.delete("/delete/" + id);
+    const data = await axios.delete("api/payment/delete/" + id);
     if (data.data.success) {
-      //getFetchData();
+      getFetchData();
       alert(data.data.message);
     }
   };
@@ -87,9 +89,9 @@ const Paymentmanagement=()=> {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const data = await axios.put("/update", formData);
+    const data = await axios.put("api/payment/update", formData);
     if (data.data.success) {
-      //getFetchData();
+      getFetchData();
       alert(data.data.message);
       setEditSection(false);
     }
@@ -153,7 +155,8 @@ const downloadPDF = () => {
   };
 
   return (
-  
+  <>
+    <Navbar3 />
     <div className = "containersa" >
       <h3>Additional Expenses</h3>
       <button className = "btn btn-add" onClick={()=>setAddSection(true)}>Add Expenses</button> 
@@ -211,7 +214,7 @@ const downloadPDF = () => {
                     <td>{el.amount}</td>
                     <td>
                       <button className='btn btn-edit' onClick={() => handleEdit(el)
-                      }>Edit</button>
+                      }>Edit</button><br/><br/>
                       <button className='btn btn-delete' onClick={() => handleDelete(el._id)}>Delete</button>
                     </td>
                   </tr>
@@ -232,8 +235,10 @@ const downloadPDF = () => {
         </table>
           <br/><br/>
         <button className = "report" onClick={downloadPDF}>Download Report</button>
-      </div>
+      </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </div>
+    <Footer/>
+    </>
   );
  
 }

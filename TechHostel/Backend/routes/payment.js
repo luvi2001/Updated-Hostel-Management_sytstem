@@ -1,6 +1,6 @@
 const express =require('express')
 
-const { ewalletCreate,addExpenses, getExpense, createExpense}= require('../controllers/paymentcontroller')
+const { ewalletCreate,addExpenses, getExpense, createExpense, deleteExpense, updateExpense}= require('../controllers/paymentcontroller')
 
 const router=express.Router()
 
@@ -9,6 +9,8 @@ router.post('/createewallet',ewalletCreate)
 router.get('/getexpense',getExpense)
 router.post('/createexpense',addExpenses)
 router.post('/expenseadd',createExpense)
+router.delete('/delete/:id',deleteExpense)
+router.put('/update',updateExpense)
 
 
 module.exports= router

@@ -45,6 +45,20 @@ header .nav-btn {
 	opacity: 0;
 	font-size: 1.8rem;
 }
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* Remove padding */
+	width: 40px;
+}
+
+.logout-button svg {
+    width: 20px; /* Adjust the width of the icon */
+    height: auto; /* Maintain aspect ratio */
+    color: #f4eeee; /* Adjust the color of the icon */
+}
+
 
 header div,
 nav {
@@ -72,6 +86,7 @@ nav {
 		background-color: var(--mainColor);
 		transition: 1s;
 	}
+	
 
 	header .responsive_nav {
 		transform: translateY(100vh);

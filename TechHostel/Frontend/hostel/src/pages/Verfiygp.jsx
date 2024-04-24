@@ -5,6 +5,7 @@ import Navbar2 from "../components/Navbar2";
 import "../css/gatepasses.css"; // Import the CSS file
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Footer from "../components/Footer";
 
 
 function Verfiygp() {
@@ -97,7 +98,10 @@ function Verfiygp() {
             <p>Reason: {gatePass.reason}</p>
             <p>Created at: {gatePass.createdAt}</p>
             <p>Updated At: {gatePass.updatedAt}</p>
+            <p>Assigned At: {new Date(gatePass.createdAt).toLocaleString()}</p>
+            <p>Updated At: {new Date(gatePass.updatedAt).toLocaleString()}</p>
             <p className="status">Status: {gatePass.status}</p>
+
             </div>
             {gatePass.status !== "verified" && (
               <button className="approve-button" onClick={() => handleApprove(gatePass._id)}>
@@ -119,6 +123,7 @@ function Verfiygp() {
           </div>
         ))}
       </div>
+      <Footer/>
     </>
   );
 }

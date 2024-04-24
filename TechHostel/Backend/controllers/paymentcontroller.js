@@ -74,4 +74,20 @@ const ewalletCreate= async(req,res) => {
 }
 
 
-module.exports={ewalletCreate,addExpenses,getExpense,createExpense}
+const deleteExpense=async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    const data = await Expense.deleteOne({ _id: id });
+    res.send({ success: true, message: "Data delete successfully", data: data });
+  }
+
+  const updateExpense= async (req, res) => {
+    console.log(req.body)
+    const { _id, ...rest } = req.body
+  
+    console.log(rest)
+    const data = await Expense.updateOne({ _id: _id }, rest)
+    res.send({ success: true, message: "Data update successfully", data: data })
+  }
+
+module.exports={ewalletCreate,addExpenses,getExpense,createExpense,deleteExpense,updateExpense}

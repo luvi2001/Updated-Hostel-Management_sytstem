@@ -41,11 +41,13 @@ const getUserByName = async (req, res) => {
     // Find user by name in the database
     const user = await RegisterProfile.findOne({ name });
 
+    
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+      res.status(200).json({ message: 'Student not found'});
+   }else{
 
-    res.status(200).json(user);
+   res.status(200).json(user);
+   }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -59,10 +61,11 @@ const getUserByNIC = async (req, res) => {
     const user = await RegisterProfile.findOne({ nic });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+       res.status(200).json({ message: 'Student not found'});
+    }else{
 
     res.status(200).json(user);
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -103,7 +106,7 @@ const addTasks= async (req, res) => {
     await newFormData.save();
 
     // Send a success response
-    res.status(201).json({ success: true, message: 'Form data saved successfully' });
+    res.status(201).json({ success: true, message: 'Task added successfully' });
   } catch (error) {
     // If an error occurs, send an error response
     console.error('Error:', error);
@@ -148,20 +151,32 @@ const getAllStudents = async (req, res) => {
   }
 };
 
-  const approveGatePass = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const gatePass = await GatePass.findById(id);
-      if (!gatePass) {
-        return res.status(404).json({ error: 'Gate pass not found' });
-      }
-      gatePass.status = 'approved';
-      await gatePass.save();
-      res.json({ message: 'Gate pass approved successfully', gatePass });
-    } catch (error) {
-      res.status(500).json({ error: 'Something went wrong' });
+const approveGatePass = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const gatePass = await GatePass.findById(id);
+    
+    if (!gatePass) {
+      return res.status(404).json({ error: 'Gate pass not found' });
     }
-  };
+
+    // Check if the gate pass status is already 'verified'
+   if (gatePass.status !== 'verified') {
+      // Update the gate pass status to 'approved'
+    gatePass.status = 'approved';
+    await gatePass.save();
+    
+    }
+
+    
+    
+    
+    res.json({ message: 'Gate pass approved successfully', gatePass });
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
 
   const dnapproveGatePass = async (req, res) => {
     try {
@@ -178,4 +193,45 @@ const getAllStudents = async (req, res) => {
     }
   };
 
-module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC,addTasks,getAllTasks}
+  const deleteTaskById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await assignTask.findByIdAndDelete(id);
+      
+      res.json({ message: 'Gate pass deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting gate pass:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+  const updateTask = async (req, res) => {
+    const { id } = req.params; // Extract taskId from URL params
+    const { taskName, description } = req.body; // Extract updated taskName and description from request body
+  
+    try {
+      // Find the task by taskId
+      const task = await assignTask.findById(id);
+      
+      if (!task) {
+        // If task with the given ID doesn't exist, return 404 Not Found
+        return res.status(404).json({ message: 'Task not found' });
+      }
+  
+      // Update task properties
+      task.task_name = taskName;
+      task.message = description;
+  
+      // Save the updated task
+      await task.save();
+  
+      // Respond with the updated task
+      res.status(200).json({ message: 'Task updated successfully', task });
+    } catch (error) {
+      console.error('Error updating task:', error);
+      // Handle database error or other errors
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC,addTasks,getAllTasks,deleteTaskById,updateTask}

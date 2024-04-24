@@ -1,6 +1,6 @@
 const express =require('express')
 
-const {registerProfile,getUserByName,getAllGatePasses,approveGatePass,dnapproveGatePass, getAllStudents, getUserByID, getUserByNIC,  addTasks, getAllTasks}= require('../controllers/wardencontroller')
+const {registerProfile,getUserByName,getAllGatePasses,approveGatePass,dnapproveGatePass, getAllStudents, getUserByID, getUserByNIC,  addTasks, getAllTasks, deleteTaskById,updateTask}= require('../controllers/wardencontroller')
 
 const router=express.Router()
 
@@ -14,5 +14,7 @@ router.put('/dnapprove/:id',dnapproveGatePass)
 router.get('/getstudents',getAllStudents)
 router.get('/getstudent/:id',getUserByID)
 router.post('/addtask',addTasks)
+router.delete('/delete/:id', deleteTaskById)
+router.put('/updatetask/:id',updateTask)
 
 module.exports= router

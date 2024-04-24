@@ -68,6 +68,9 @@
     font-weight:10% ;
   }
   
+  .report{
+    background-color: #0056b3;
+  }
   .addContainer form .close-btn{
     margin-left: auto;
     font-size: 18px;
@@ -218,7 +221,7 @@
     justify-content: center;
   }
   .report{
-    background-color: gainsboro;
+    background-color: rgb(17, 67, 143);
     padding: 1rem;
     float:right;
     border: none;

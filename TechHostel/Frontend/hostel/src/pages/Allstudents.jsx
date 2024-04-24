@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link for routing
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import '../css/allstudents.css'
-import Footer from '../components/Footer'
+import '../css/allstudents.css';
+import Footer from '../components/Footer';
 
 function Allstudents() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchStudents();
@@ -26,14 +27,33 @@ function Allstudents() {
     }
   };
 
+  // Calculate total number of students
+  const totalStudents = students.length;
+
+  // Filter students based on search query
+  const filteredStudents = students.filter(student => {
+    const nameMatch = student.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const nicMatch = student.nic.toLowerCase().includes(searchQuery.toLowerCase());
+    return nameMatch || nicMatch;
+  });
+
   return (
     <>
-    <Navbar /><br/><br/><br/>
-    <div className="all-students-container">
-        <h2>All Hostelers</h2>
+      <Navbar /><br/><br/><br/>
+      <div className="all-students-container">
+        <h2 className="centre">All Hostelers</h2>
+        <div className="container">
+        <input
+          type="text"
+          placeholder="Search by name or NIC"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        </div>
+        <p className="centre">Total Students: {totalStudents}</p><br/><br/>
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {students.map((student) => (
+        {filteredStudents.map((student) => (
           <div className="student-item" key={student._id}>
             <p>Name: {student.name}</p>
             <p>NIC: {student.nic}</p>
@@ -41,9 +61,9 @@ function Allstudents() {
               <button>View</button>
             </Link>
           </div>
-      ))}
-    </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-    <Footer/>
+        ))}
+      </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      <Footer/>
     </>
   );
 }

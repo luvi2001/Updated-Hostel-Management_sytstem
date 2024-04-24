@@ -25,11 +25,15 @@ const loginValidate = async (req, res) => {
         // Check user role
         if (user.role === 'warden') {
             // Redirect to admin panel route
-            res.status(200).json({ message: 'Warden login' });
+            res.status(200).json({ message: 'Warden login' ,user});
             // Don't send any more responses after redirecting
         } else if(user.role=== 'security'){
             // Redirect to security panel route
-            res.status(200).json({ message: 'Security login' });
+            res.status(200).json({ message: 'Security login',user });
+            // res.redirect('/security-panel');
+        }else if(user.role=== 'paymentstaff'){
+            // Redirect to security panel route
+            res.status(200).json({ message: 'Paymentstaff login',user });
             // res.redirect('/security-panel');
         }
     } catch (error) {

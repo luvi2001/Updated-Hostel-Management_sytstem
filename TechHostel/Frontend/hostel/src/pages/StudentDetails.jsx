@@ -5,6 +5,7 @@ import '../css/studentdetail.css'
 import Navbar from "../components/Navbar";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Footer from "../components/Footer";
 
 
 function StudentDetails() {
@@ -64,7 +65,7 @@ function StudentDetails() {
     <>
     <Navbar /><br/><br/><br/>
     <div className="student-details-container">
-      <div  ref={pdfRef}>
+      <div className="innercontainer" ref={pdfRef}>
       <h2>Student Details</h2>
 
       <label>Name</label>
@@ -91,9 +92,9 @@ function StudentDetails() {
       <div className="btn">
    <button onClick={downloadPDF}>Download</button>
    </div>
-   </div>
+   </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     
-   
+   <Footer/>
     </>
   );
 }

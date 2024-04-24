@@ -6,6 +6,7 @@ import axios from 'axios';
 import Navbar from "../components/Navbar";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 
 
@@ -287,7 +288,8 @@ const Registerstudent = () => {
     </form>
    
    </div>
-   </div>
+   </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+   <Footer/>
    </>
   );
 };
