@@ -18,9 +18,7 @@ const Loginpage = () => {
     try {
       const response = await axios.post('/api/auth/validatelogin', { email, password });
       
-      const { token } = response.data;
-      // Set session token in browser storage
-      window.sessionStorage.setItem('token', token);
+      localStorage.setItem('token', response.data.token);
 
       if (response.data.message === 'Warden login') {
         // Redirect to the desired route

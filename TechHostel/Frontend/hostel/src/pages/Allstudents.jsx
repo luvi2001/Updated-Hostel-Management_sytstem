@@ -27,6 +27,20 @@ function Allstudents() {
     }
   };
 
+  const handleDelete = async (studentId) => {
+    try {
+      await axios.delete(`/api/warden/deletestudent/${studentId}`);
+      // After successful deletion, update the list of students
+      //const updatedStudents = students.filter(student => student._id !== studentId);
+      fetchStudents();
+      //setStudents(updatedStudents);
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      setError("An error occurred while deleting the student.");
+    }
+  };
+  
+
   // Calculate total number of students
   const totalStudents = students.length;
 
@@ -58,8 +72,9 @@ function Allstudents() {
             <p>Name: {student.name}</p>
             <p>NIC: {student.nic}</p>
             <Link to={`/student/${student._id}`}>
-              <button>View</button>
+                <button>View</button>
             </Link>
+           <button onClick={() => handleDelete(student._id)}>Delete</button>
           </div>
         ))}
       </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>

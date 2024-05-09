@@ -34,7 +34,9 @@ const Registerstudent = () => {
   const [errors, setErrors] = useState({});
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("First Name is Required"),
+    name: Yup.string()
+    .matches(/^[a-zA-Z]+$/, "Name must contain only letters")
+    .required("First Name is Required"),
 
     parentName: Yup.string().required("Parent Name is Required"),
 

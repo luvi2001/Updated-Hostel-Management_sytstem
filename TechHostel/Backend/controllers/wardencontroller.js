@@ -234,4 +234,17 @@ const approveGatePass = async (req, res) => {
     }
   };
 
-module.exports={registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC,addTasks,getAllTasks,deleteTaskById,updateTask}
+
+  const deleteStudentProfile= async(req, res) => {
+    try {
+      const { id } = req.params;
+      // Perform deletion logic here, for example:
+      await RegisterProfile.findByIdAndDelete(id);
+      res.status(200).send({ message: "Student deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      res.status(500).send({ error: "An error occurred while deleting the student" });
+    }
+  };
+
+module.exports={deleteStudentProfile,registerProfile,getUserByName,approveGatePass,getAllGatePasses,dnapproveGatePass,getAllStudents,getUserByID,getUserByNIC,addTasks,getAllTasks,deleteTaskById,updateTask}

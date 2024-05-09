@@ -26,6 +26,8 @@ const loginValidate = async (req, res) => {
         if (user.role === 'warden') {
             // Redirect to admin panel route
             res.status(200).json({ message: 'Warden login' ,user});
+            const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.json({ token });
             // Don't send any more responses after redirecting
         } else if(user.role=== 'security'){
             // Redirect to security panel route
