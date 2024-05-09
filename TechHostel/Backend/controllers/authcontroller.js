@@ -26,8 +26,8 @@ const loginValidate = async (req, res) => {
         if (user.role === 'warden') {
             // Redirect to admin panel route
             res.status(200).json({ message: 'Warden login' ,user});
-            const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ token });
+            //const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+           // res.json({ token });
             // Don't send any more responses after redirecting
         } else if(user.role=== 'security'){
             // Redirect to security panel route
@@ -36,6 +36,10 @@ const loginValidate = async (req, res) => {
         }else if(user.role=== 'paymentstaff'){
             // Redirect to security panel route
             res.status(200).json({ message: 'Paymentstaff login',user });
+            // res.redirect('/security-panel');
+        }else if(user.role=== 'fstaff'){
+            // Redirect to security panel route
+            res.status(200).json({ message: 'Fstaff login',user });
             // res.redirect('/security-panel');
         }
     } catch (error) {

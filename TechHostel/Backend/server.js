@@ -4,11 +4,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors package
 const app = express();
-const healthRoutes = require('./routes/health');
+
 const wardenRoutes = require('./routes/warden');
 const securityRoutes = require('./routes/security');
 const authRoutes = require('./routes/auth');
 const paymentRoutes = require('./routes/payment');
+const fstaffRoutes=require('./routes/fstaff')
 
 app.use(express.json());
 app.use(cors({
@@ -35,11 +36,12 @@ app.get('/gf', (req, res) => {
   res.send("Welcome to project Tech?Hostel");
 });
 
-app.use('/api/health', healthRoutes);
+
 app.use('/api/warden', wardenRoutes);
 app.use('/api/security', securityRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/fstaff', fstaffRoutes);
 
 app.listen(8000, () => {
   console.log("Server is running on port 8000");

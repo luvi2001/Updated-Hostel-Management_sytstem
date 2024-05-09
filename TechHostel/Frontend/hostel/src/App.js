@@ -12,6 +12,7 @@ import Paymentmanagement from "./pages/Paymentmanagment";
 import Sendmail from "./pages/Sendmail";
 import Alltasks from "./pages/Alltasks";
 import Mail from "./pages/Mail";
+import Gettasks from "./pages/Gettasks";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/assigntask" element={<Sendmail />} />
           <Route path="/tasksall" element={<Alltasks />} />
           <Route path="/mail" element={<Mail />} />
+          <Route path="/gettasks" element={<Gettasks />} />
         </Routes>
       </BrowserRouter>
     </>

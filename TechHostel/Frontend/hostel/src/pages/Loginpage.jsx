@@ -35,6 +35,11 @@ const Loginpage = () => {
         window.alert('Paymentstaff login');
       }
 
+      else if(response.data.message === 'Fstaff login'){
+        navigate("/gettasks");
+        window.alert('Facility staff login');
+      }
+
 
       
     } catch (err) {
