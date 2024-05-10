@@ -1,32 +1,38 @@
 const RegisterProfile= require('../models/usermodel')
 const GatePass=require('../models/securitymodel')
 //const Login=require('../models/loginmodel')
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const assignTask=require('../models/tasks')
 
 
-const registerProfile= async(req,res) => {
-    try{
-        const {name,email,age,birthDate,nic,password,parentName,phoneNumber}=req.body;
-        const newProfile=new RegisterProfile({
+
+
+const registerProfile = async (req, res) => {
+    try {
+        const { name, email, age, birthDate, nic, password, parentName, phoneNumber } = req.body;
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10); // 10 is the number of salt rounds
+
+        const newProfile = new RegisterProfile({
             name,
             email,
             age,
             birthDate,
             nic,
-            password,
+            password: hashedPassword, // Store the hashed password
             parentName,
             phoneNumber
-            
         });
 
         await newProfile.save();
         res.status(201).json({ message: 'Register profile created', data: newProfile });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Internal server error' });
     }
-    catch(err){
-        console.log(err)
-    }
-}
+};
+
 
 
 

@@ -11,7 +11,7 @@ function Navbar4() {
     const handleLogout = () => {
         // Perform logout actions here (e.g., clear session)
         // Navigate to the login page
-        navigate('/');
+        navigate('/stlog');
     };
 
 
@@ -21,7 +21,8 @@ function Navbar4() {
 		<header>
 			<h3>HOSTEL MANANGEMENT SYSTEM</h3>
 			<nav ref={navRef}>
-			    
+			   <Link to="/getprof">Profile</Link>
+               <Link to="/apgt">Apply gate passes</Link>
 				
 				<button className="logout-button" onClick={handleLogout}>
                     <FontAwesomeIcon icon={faSignOutAlt} />

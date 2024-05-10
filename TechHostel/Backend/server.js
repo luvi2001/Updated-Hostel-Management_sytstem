@@ -10,6 +10,7 @@ const securityRoutes = require('./routes/security');
 const authRoutes = require('./routes/auth');
 const paymentRoutes = require('./routes/payment');
 const fstaffRoutes=require('./routes/fstaff')
+const studentRoutes=require('./routes/student')
 
 app.use(express.json());
 app.use(cors({
@@ -42,6 +43,7 @@ app.use('/api/security', securityRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/fstaff', fstaffRoutes);
+app.use('/api/student',studentRoutes)
 
 app.listen(8000, () => {
   console.log("Server is running on port 8000");

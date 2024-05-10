@@ -13,6 +13,9 @@ import Sendmail from "./pages/Sendmail";
 import Alltasks from "./pages/Alltasks";
 import Mail from "./pages/Mail";
 import Gettasks from "./pages/Gettasks";
+import Studentlogin from "./pages/Studentlogin"
+import Studentprof from "./pages/Studentprof";
+import Applygatepass from "./pages/Applygatepass";
 
 
 function App() {
@@ -34,6 +37,10 @@ function App() {
           <Route path="/tasksall" element={<Alltasks />} />
           <Route path="/mail" element={<Mail />} />
           <Route path="/gettasks" element={<Gettasks />} />
+          <Route path="/stlog" element={<Studentlogin />} />
+          <Route path="/getprof" element={<Studentprof  />}/>
+          <Route path="/apgt" element={<Applygatepass  />}/>
+
         </Routes>
       </BrowserRouter>
     </>

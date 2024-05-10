@@ -22,7 +22,8 @@ const registerSchema=new Schema({
     },
     nic:{
         type: String,
-        required:true
+        required:true,
+        unique:true
     },
     password:{
         type: String,
@@ -35,7 +36,6 @@ const registerSchema=new Schema({
     phoneNumber:{
         type: String,
         required:true,
-        unique:true
     },
     status: {
          type: String,

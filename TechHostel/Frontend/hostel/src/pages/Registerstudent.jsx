@@ -116,7 +116,7 @@ const Registerstudent = () => {
         const response = await axios.post('/api/warden/register', formData);
         window.alert('Registration sucessful')
 
-        const { name, nic } = formData;
+        const { name, nic ,password,email} = formData;
 
         // Send request to create ewallet entry
         const ewalletData = { name, nic };
@@ -127,6 +127,12 @@ const Registerstudent = () => {
         const expensesData = { name, nic };
         const expenseResponse = await axios.post('/api/payment/createexpense', expensesData);
         window.alert('Expenses created successfully');
+
+        const auth = { email, password };
+        const st=await axios.post('/api/student/authstudent', auth);
+        window.alert('Student created successfully');
+
+
         
         navigate('/register')
     
@@ -139,6 +145,7 @@ const Registerstudent = () => {
         console.log('Form submitted:', response.data);
         console.log('E-wallet created:', ewalletResponse.data);
         console.log('Expense created:', expenseResponse.data);
+        console.log('student created:', st.data);
 
       } catch (error) {
         const newErrors = {};
