@@ -16,13 +16,14 @@ import Gettasks from "./pages/Gettasks";
 import Studentlogin from "./pages/Studentlogin"
 import Studentprof from "./pages/Studentprof";
 import Applygatepass from "./pages/Applygatepass";
-import PaymentVerification from "./pages/PaymentVerification";
 
 
 function App() {
   return (
     <div className="App">
       <>
+
+      
       <BrowserRouter>
         <Routes>
           <Route path="/register" element={<Registerstudent />} />
