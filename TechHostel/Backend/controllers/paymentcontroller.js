@@ -1,5 +1,6 @@
 const Ewallet=require('../models/ewalletmodel')
 const Expense=require('../models/additionalPayment')
+const Payment=require('../models/verificationmodel')
 
 
 const createExpense= async(req,res) => {
@@ -90,4 +91,29 @@ const deleteExpense=async (req, res) => {
     res.send({ success: true, message: "Data update successfully", data: data })
   }
 
-module.exports={ewalletCreate,addExpenses,getExpense,createExpense,deleteExpense,updateExpense}
+
+const verificationDetails=  async (req, res) => {
+    try {
+      const { studentName, nicNumber, accountNumber, bank, amount, date } = req.body;
+  
+      // Create a new payment document
+      const payment = new Payment({
+        studentName,
+        nicNumber,
+        accountNumber,
+        bank,
+        amount,
+        date,
+      });
+  
+      // Save payment data to the database
+      await payment.save();
+  
+      res.json({ success: true, message: "Payment details saved successfully." });
+    } catch (error) {
+      console.error("Error saving payment details:", error);
+      res.status(500).json({ success: false, error: "Error saving payment details." });
+    }
+  };
+
+module.exports={ewalletCreate,addExpenses,getExpense,createExpense,deleteExpense,updateExpense,verificationDetails}

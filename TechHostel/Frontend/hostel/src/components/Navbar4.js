@@ -23,6 +23,7 @@ function Navbar4() {
 			<nav ref={navRef}>
 			   <Link to="/getprof">Profile</Link>
                <Link to="/apgt">Apply gate passes</Link>
+			   <Link to="/paymentform">Add payment details</Link>
 				
 				<button className="logout-button" onClick={handleLogout}>
                     <FontAwesomeIcon icon={faSignOutAlt} />
