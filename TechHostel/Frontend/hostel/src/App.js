@@ -17,6 +17,8 @@ import Studentlogin from "./pages/Studentlogin"
 import Studentprof from "./pages/Studentprof";
 import Applygatepass from "./pages/Applygatepass";
 import PaymentVerification from "./pages/PaymentVerification"
+import Healthinfo from "./pages/Healthinfo";
+import Gethealthinfos from "./pages/Gethealthinfos";
 
 
 function App() {
@@ -44,6 +46,8 @@ function App() {
           <Route path="/getprof" element={<Studentprof  />}/>
           <Route path="/apgt" element={<Applygatepass  />}/>
           <Route path="/paymentform" element={<PaymentVerification  />}/>
+          <Route path="/healthinfo" element={<Healthinfo  />}/>
+          <Route path="/gethealthinfo" element={<Gethealthinfos  />}/>
 
         </Routes>
       </BrowserRouter>
