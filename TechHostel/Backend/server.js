@@ -26,12 +26,13 @@ const studentRoutes = require('./routes/student');
 const healthInfoRoutes = require('./routes/healthInfoRoutes');
 
 app.use(express.json());
+const isProd = process.env.NODE_ENV === "production";
+
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true // allow cookies
+  origin: isProd ? "https://updated-hostel-management-sytstem.onrender.com" : "http://localhost:3000",
+  credentials: true
 }));
 
-// 🔹 Session middleware (for student logins only)
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'supersecretkey',
@@ -40,8 +41,9 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
       httpOnly: true,
-      secure: true, // change to true if using https
-      maxAge: 1000 * 60 * 60 * 2, // 2 hours
+      secure: isProd,             // only secure in production
+      sameSite: isProd ? "None" : "Lax",
+      maxAge: 1000 * 60 * 60 * 2,
     },
   })
 );
