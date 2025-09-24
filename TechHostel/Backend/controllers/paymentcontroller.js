@@ -1,119 +1,198 @@
-const Ewallet=require('../models/ewalletmodel')
-const Expense=require('../models/additionalPayment')
-const Payment=require('../models/verificationmodel')
+const mongoose = require('mongoose');
+const Ewallet = require('../models/ewalletmodel');
+const Expense = require('../models/additionalPayment');
+const Payment = require('../models/verificationmodel');
 
+// ✅ Helper function to safely cast ObjectId
+const toObjectId = (id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new Error('Invalid ID format');
+  }
+  return new mongoose.Types.ObjectId(id);
+};
 
-const createExpense= async(req,res) => {
-    try{
-        const {name,nic,issue,amount}=req.body;
-        const newProfile=new Expense({
-            name,
-            nic,
-            issue,
-            amount
-            
-        });
+// ==========================
+// Create Expense (deduct from wallet)
+// ==========================
+const createExpense = async (req, res) => {
+  try {
+    const { name, nic, issue, amount } = req.body;
 
-        await newProfile.save();
-        res.status(201).json({ message: 'Additional expenses added', data: newProfile });
+    if (!name || !nic || !issue || !amount || amount <= 0) {
+      return res.status(400).json({ error: 'Invalid expense input' });
     }
-    catch(err){
-        console.log(err)
+
+    // ✅ Find wallet by NIC
+    const wallet = await Ewallet.findOne({ nic: nic.trim().toUpperCase() });
+    if (!wallet) {
+      return res.status(404).json({ error: 'Ewallet not found' });
     }
-}
 
-
-
-  const getExpense = async (req, res) => {
-    try {
-        const data = await Expense.find({});
-        res.json({ success: true, data: data });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+    // ✅ Check if enough balance
+    if (wallet.balance < amount) {
+      return res.status(400).json({ error: 'Insufficient wallet balance' });
     }
-  };
 
-const addExpenses= async(req,res) => {
-    try{
-        const {name,nic}=req.body;
-        const newProfile=new Expense({
-            name,
-            nic,
-            nameOfCost:' ',
-            issue:' ',
-            amount:0
-            
-        });
+    // ✅ Deduct balance
+    wallet.balance -= amount;
+    await wallet.save();
 
-        await newProfile.save();
-        res.status(201).json({ message: 'Additional expenses added', data: newProfile });
+    // ✅ Save expense
+    const newProfile = new Expense({ name, nic, issue, amount });
+    await newProfile.save();
+
+    res.status(201).json({
+      message: 'Expense added & balance updated',
+      expense: newProfile,
+      walletBalance: wallet.balance,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// ==========================
+// Get Expenses
+// ==========================
+const getExpense = async (req, res) => {
+  try {
+    const data = await Expense.find({}).lean();
+    res.json({ success: true, data });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+// ==========================
+// Add Expense (default fields)
+// ==========================
+const addExpenses = async (req, res) => {
+  try {
+    const { name, nic } = req.body;
+
+    if (!name || !nic) {
+      return res.status(400).json({ error: 'Name & NIC required' });
     }
-    catch(err){
-        console.log(err)
+
+    const newProfile = new Expense({
+      name: name.trim(),
+      nic: nic.trim().toUpperCase(),
+      nameOfCost: ' ',
+      issue: ' ',
+      amount: 0,
+    });
+
+    await newProfile.save();
+    res.status(201).json({ message: 'Expense added', data: newProfile });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// ==========================
+// Create Ewallet
+// ==========================
+const ewalletCreate = async (req, res) => {
+  try {
+    const { name, nic } = req.body;
+
+    if (!name || !nic) {
+      return res.status(400).json({ error: 'Name & NIC required' });
     }
-}
 
+    const newProfile = new Ewallet({
+      name: name.trim(),
+      nic: nic.trim().toUpperCase(),
+      balance: 0,
+    });
 
+    await newProfile.save();
+    res.status(201).json({ message: 'Ewallet created', data: newProfile });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
-const ewalletCreate= async(req,res) => {
-    try{
-        const {name,nic}=req.body;
-        const newProfile=new Ewallet({
-            name,
-            nic,
-            balance:0
-            
-        });
-
-        await newProfile.save();
-        res.status(201).json({ message: 'Ewallet created', data: newProfile });
-    }
-    catch(err){
-        console.log(err)
-    }
-}
-
-
-const deleteExpense=async (req, res) => {
-    const id = req.params.id;
-    console.log(id);
+// ==========================
+// Delete Expense
+// ==========================
+const deleteExpense = async (req, res) => {
+  try {
+    const id = toObjectId(req.params.id);
     const data = await Expense.deleteOne({ _id: id });
-    res.send({ success: true, message: "Data delete successfully", data: data });
+    res.json({ success: true, message: 'Expense deleted', data });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: 'Invalid ID' });
   }
+};
 
-  const updateExpense= async (req, res) => {
-    console.log(req.body)
-    const { _id, ...rest } = req.body
-  
-    console.log(rest)
-    const data = await Expense.updateOne({ _id: _id }, rest)
-    res.send({ success: true, message: "Data update successfully", data: data })
+// ==========================
+// Update Expense
+// ==========================
+const updateExpense = async (req, res) => {
+  try {
+    const { _id, ...rest } = req.body;
+    if (!_id) return res.status(400).json({ error: 'Expense ID required' });
+
+    const id = toObjectId(_id);
+    const data = await Expense.updateOne({ _id: id }, { $set: rest });
+
+    res.json({ success: true, message: 'Expense updated', data });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: 'Invalid request' });
   }
+};
 
+// ==========================
+// Verification Payment (credit wallet)
+// ==========================
+// controllers/paymentcontroller.js
+const { body, validationResult } = require("express-validator");
+const mongoSanitize = require("express-mongo-sanitize");
 
-const verificationDetails=  async (req, res) => {
-    try {
-      const { studentName, nicNumber, accountNumber, bank, amount, date } = req.body;
-  
-      // Create a new payment document
-      const payment = new Payment({
-        studentName,
-        nicNumber,
-        accountNumber,
-        bank,
-        amount,
-        date,
-      });
-  
-      // Save payment data to the database
-      await payment.save();
-  
-      res.json({ success: true, message: "Payment details saved successfully." });
-    } catch (error) {
-      console.error("Error saving payment details:", error);
-      res.status(500).json({ success: false, error: "Error saving payment details." });
+// Middleware to sanitize body
+app.use(mongoSanitize());
+
+const verificationDetails = async (req, res) => {
+  try {
+    // Validate user input
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
     }
-  };
 
-module.exports={ewalletCreate,addExpenses,getExpense,createExpense,deleteExpense,updateExpense,verificationDetails}
+    const { studentName, nicNumber, accountNumber, bank, amount, date } = req.body;
+
+    // Create sanitized payment document
+    const payment = new Payment({
+      studentName: String(studentName).trim(),
+      nicNumber: String(nicNumber).trim(),
+      accountNumber: String(accountNumber).trim(),
+      bank: String(bank).trim(),
+      amount: Number(amount),
+      date: new Date(date),
+    });
+
+    await payment.save();
+    res.json({ success: true, message: "Payment details saved securely." });
+  } catch (error) {
+    console.error("Error saving payment details:", error);
+    res.status(500).json({ success: false, error: "Error saving payment details." });
+  }
+};
+
+module.exports = {
+  ewalletCreate,
+  addExpenses,
+  getExpense,
+  createExpense,
+  deleteExpense,
+  updateExpense,
+  verificationDetails,
+};

@@ -48,13 +48,7 @@ const loginValidate = async (req, res) => {
     }
   }
   
-  
-  
-  
-  
-  
-  
-  
+ 
   const createLogin = async (req, res) => {
       try {
           const { email, password, role } = req.body;
