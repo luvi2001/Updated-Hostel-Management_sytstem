@@ -16,10 +16,10 @@ const createExpense= async(req,res) => {
 
         await newProfile.save();
         res.status(201).json({ message: 'Additional expenses added', data: newProfile });
-    }
-    catch(err){
-        console.log(err)
-    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
+  }
 }
 
 
@@ -29,8 +29,8 @@ const createExpense= async(req,res) => {
         const data = await Expense.find({});
         res.json({ success: true, data: data });
     } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error', error: err.message });
     }
   };
 
@@ -48,10 +48,10 @@ const addExpenses= async(req,res) => {
 
         await newProfile.save();
         res.status(201).json({ message: 'Additional expenses added', data: newProfile });
-    }
-    catch(err){
-        console.log(err)
-    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
+  }
 }
 
 
@@ -68,10 +68,10 @@ const ewalletCreate= async(req,res) => {
 
         await newProfile.save();
         res.status(201).json({ message: 'Ewallet created', data: newProfile });
-    }
-    catch(err){
-        console.log(err)
-    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
+  }
 }
 
 

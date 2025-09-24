@@ -15,7 +15,7 @@ const getUserByName = async (req, res) => {
       res.status(200).json(user);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+    res.status(500).json({ message: 'Internal server error', error: err.message });
     }
   };
 
@@ -32,6 +32,8 @@ const getUserByName = async (req, res) => {
       res.json(gatePasses);
     } catch (error) {
       res.status(500).json({ error: 'Something went wrong' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
     }
   };
 
@@ -45,6 +47,8 @@ const applyGatePass = async (req, res) => {
   } catch (error) {
 
     res.status(500).json({ error: 'Something went wrong' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -67,6 +71,8 @@ const verifyGatePass = async (req, res) => {
     res.json({ message: 'Gate pass verified successfully', gatePass });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -78,7 +84,7 @@ const deleteGatePassById = async (req, res) => {
     res.json({ message: 'Gate pass deleted successfully' });
   } catch (error) {
     console.error('Error deleting gate pass:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -94,6 +100,8 @@ const dnverifyGatePass = async (req, res) => {
     res.json({ message: 'Gate pass approved successfully', gatePass });
   } catch (error) {
     res.status(500).json({ error: 'Something went wrong' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -108,6 +116,8 @@ const updateStudentStatus = async (req, res) => {
   } catch (error) {
     console.error("Error updating student status:", error);
     res.status(500).json({ message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import '../css/register.css'
 import Navbar5 from "../components/Navbar5";
 import Footer from "../components/Footer";
-
+import validator from 'validator';
 
 const Healthinfo = () => {
   const [formData, setFormData] = useState({
@@ -12,14 +12,30 @@ const Healthinfo = () => {
     category: "Diet",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    // Basic client-side sanitization
+    let sanitizedValue = value;
+    if (typeof value === 'string') {
+      // Remove script tags and dangerous attributes
+      sanitizedValue = value.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+      sanitizedValue = sanitizedValue.replace(/on\w+="[^"]*"/gi, '');
+      sanitizedValue = sanitizedValue.replace(/on\w+='[^']*'/gi, '');
+    }
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: sanitizedValue
+    }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Server-side sanitization should also be implemented
+      const sanitizedData = {
+        title: validator.escape(formData.title),
+        description: validator.escape(formData.description),
+        category: validator.escape(formData.category),
+      };
       const response = await axios.post("/api/healthInfoRoutes/", formData);
       console.log(response.data.message);
       setFormData({ title: "", description: "", category: "Diet" });
