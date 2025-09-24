@@ -3,7 +3,16 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors package
+const rateLimit = require('express-rate-limit');
 const app = express();
+// Rate limiter for authentication routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests, try again later'
+});
 
 const wardenRoutes = require('./routes/warden');
 const securityRoutes = require('./routes/security');
@@ -41,7 +50,7 @@ app.get('/gf', (req, res) => {
 
 app.use('/api/warden', wardenRoutes);
 app.use('/api/security', securityRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/fstaff', fstaffRoutes);
 app.use('/api/student',studentRoutes);
