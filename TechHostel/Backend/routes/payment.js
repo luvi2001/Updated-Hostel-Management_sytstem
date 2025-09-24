@@ -6,7 +6,9 @@ const {
   createExpense,
   deleteExpense,
   updateExpense,
-  verificationDetails
+  verificationDetails,
+  getPaymentVerification,
+  getSinglePaymentVerification
 } = require('../controllers/paymentcontroller');
 
 const router = express.Router();
@@ -23,5 +25,11 @@ router.put('/expense/update/:id', updateExpense);
 
 // Payment Verification
 router.post('/payment/verify', verificationDetails);
+
+// Get all payment verifications
+router.get('/payment/verify', getPaymentVerification);
+
+// Get single payment verification by ID
+router.get('/payment/verify/:id', getSinglePaymentVerification);
 
 module.exports = router;

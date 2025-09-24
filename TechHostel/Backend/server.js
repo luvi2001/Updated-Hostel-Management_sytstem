@@ -24,11 +24,13 @@ const healthInfoRoutes = require('./routes/healthInfoRoutes');
 // Set various HTTP headers for security
 app.use(helmet());
 
+// Prevent HTTP Parameter Pollution
+app.use(hpp());
+
+
 // Prevent XSS attacks
 app.use(xssClean());
 
-// Prevent HTTP Parameter Pollution
-app.use(hpp());
 
 // Sanitize user input to prevent MongoDB Operator Injection
 app.use(mongoSanitize());

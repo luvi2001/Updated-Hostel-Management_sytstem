@@ -184,6 +184,38 @@ const verificationDetails = async (req, res) => {
   }
 };
 
+const getPaymentVerification = async (req, res) => {
+  try {
+    const payments = await Payment.find().select('-accountNumber'); 
+    // accountNumber excluded for security
+
+    if (!payments || payments.length === 0) {
+      return res.status(404).json({ success: false, message: 'No payment records found' });
+    }
+
+    return res.status(200).json({ success: true, data: payments });
+  } catch (error) {
+    console.error("Error fetching payment verification details:", error);
+    return res.status(500).json({ success: false, error: "Error fetching payment verification details." });
+  }
+};
+
+// ✅ Get single payment verification by ID
+const getSinglePaymentVerification = async (req, res) => {
+  try {
+    const payment = await Payment.findById(req.params.id).select('-accountNumber');
+
+    if (!payment) {
+      return res.status(404).json({ success: false, message: 'Payment not found' });
+    }
+
+    return res.status(200).json({ success: true, data: payment });
+  } catch (error) {
+    console.error("Error fetching payment verification:", error);
+    return res.status(500).json({ success: false, error: "Error fetching payment verification." });
+  }
+};
+
 module.exports = {
   ewalletCreate,
   addExpenses,
@@ -192,4 +224,6 @@ module.exports = {
   deleteExpense,
   updateExpense,
   verificationDetails,
+  getPaymentVerification,
+  getSinglePaymentVerification
 };
