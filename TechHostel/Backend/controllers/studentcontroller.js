@@ -57,7 +57,7 @@ const Login = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      error,
+      error: error.message,
       message: "Internal server error",
     });
   }
@@ -82,7 +82,7 @@ const getProfile = async (req, res) => {
       console.error(error);
       res.status(500).json({
         success: false,
-        error,
+        error: error.message,
         message: "Internal server error",
       });
     }
