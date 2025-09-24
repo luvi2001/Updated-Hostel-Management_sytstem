@@ -25,10 +25,6 @@ const registerSchema=new Schema({
         required:true,
         unique:true
     },
-    password:{
-        type: String,
-        required:true
-    },
     parentName:{
         type: String,
         required:true

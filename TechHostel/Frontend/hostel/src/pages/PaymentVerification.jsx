@@ -1,8 +1,8 @@
 // PaymentVerification.js
 
-import React, { useState, useEffect } from "react"; // Import useEffect from React
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import '../css/register.css';
+import "../css/register.css";
 import Navbar4 from "../components/Navbar4";
 import Footer from "../components/Footer";
 
@@ -17,25 +17,25 @@ const PaymentVerification = () => {
   });
 
   const [studentInfo, setStudentInfo] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+
+  // ✅ Ensure axios always sends cookies
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    // Fetch student info using the token from local storage
-    const token = localStorage.getItem('token');
-    if (token) {
-      const fetchStudentInfo = async () => {
-        try {
-          const response = await axios.get('/api/student/profile', {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setStudentInfo(response.data.user);
-        } catch (error) {
-          console.error('Error fetching student info:', error);
-          setError('Error fetching student info');
-        }
-      };
-      fetchStudentInfo();
-    }
+    const fetchStudentInfo = async () => {
+      try {
+        const response = await axios.get("/api/student/profile", {
+          withCredentials: true, // ✅ include cookies
+        });
+        setStudentInfo(response.data.user);
+      } catch (error) {
+        console.error("Error fetching student info:", error);
+        setError("Error fetching student info");
+      }
+    };
+
+    fetchStudentInfo();
   }, []);
 
   const handleChange = (e) => {
@@ -45,13 +45,16 @@ const PaymentVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/payment/verify", formData);
-      console.log(response.data);
-      // If payment details added successfully, show success alert
+      // ✅ Include cookies in POST as well
+      const response = await axios.post("/api/payment/verify", formData, {
+        withCredentials: true,
+      });
+
       if (response.data.success) {
         window.alert("Payment details added successfully!");
       }
-      // Reset form after successful submission
+
+      // Reset form
       setFormData({
         studentName: "",
         nicNumber: "",
@@ -62,15 +65,19 @@ const PaymentVerification = () => {
       });
     } catch (error) {
       console.error("Error submitting payment details:", error);
-      // Handle error message
+      setError("Error submitting payment details");
     }
   };
 
   return (
     <>
-      <Navbar4 /><br/><br/>
+      <Navbar4 />
+      <br />
+      <br />
       <div className="container">
         <form onSubmit={handleSubmit} className="payment-form">
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
           {studentInfo && (
             <>
               <label>
@@ -79,25 +86,24 @@ const PaymentVerification = () => {
                   type="text"
                   name="studentName"
                   value={studentInfo.name}
-                  onChange={handleChange}
-                  required
                   readOnly
+                  required
                 />
-              </label><br/>
+              </label>
+              <br />
               <label>
                 NIC Number:
                 <input
                   type="text"
                   name="nicNumber"
                   value={studentInfo.nic}
-                  onChange={handleChange}
-                  maxLength="10"
-                  required
                   readOnly
+                  required
                 />
               </label>
             </>
           )}
+
           <label>
             Account Number:
             <input
@@ -141,7 +147,21 @@ const PaymentVerification = () => {
           </label>
           <button type="submit">Submit</button>
         </form>
-      </div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Footer />
     </>
   );

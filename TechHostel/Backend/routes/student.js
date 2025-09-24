@@ -1,13 +1,19 @@
-const express =require('express')
+const express = require('express');
+const { createstudentLogin, Login, getProfile, googleLogin } = require('../controllers/studentcontroller');
 
-const {createstudentLogin,Login,getProfile}= require('../controllers/studentcontroller')
-const authMiddleware = require('../middleware/authmiddleware');
+const router = express.Router();
 
-const router=express.Router()
+// Session middleware for students
+const requireAuth = (req, res, next) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  next();
+};
 
-router.post('/authstudent',createstudentLogin)
-router.post('/log',Login)
-router.get('/profile', authMiddleware, getProfile);
+router.post('/authstudent', createstudentLogin); // keep old
+router.post('/google-login', googleLogin); // now sets session
+router.post('/log', Login); // keep old JWT login if needed
+router.get('/profile', requireAuth, getProfile); // session protected
 
-
-module.exports= router
+module.exports = router;
