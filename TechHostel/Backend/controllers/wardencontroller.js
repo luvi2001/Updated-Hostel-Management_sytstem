@@ -27,9 +27,9 @@ const registerProfile = async (req, res) => {
 
         await newProfile.save();
         res.status(201).json({ message: 'Register profile created', data: newProfile });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: 'Internal server error' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
     }
 };
 
@@ -55,8 +55,8 @@ const getUserByName = async (req, res) => {
    res.status(200).json(user);
    }
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 };
 
@@ -73,8 +73,8 @@ const getUserByNIC = async (req, res) => {
     res.status(200).json(user);
     }
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 };
 
