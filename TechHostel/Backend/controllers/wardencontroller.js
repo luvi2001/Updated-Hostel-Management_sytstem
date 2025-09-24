@@ -1,7 +1,6 @@
 const RegisterProfile= require('../models/usermodel')
 const GatePass=require('../models/securitymodel')
 //const Login=require('../models/loginmodel')
-const bcrypt = require('bcrypt');
 const assignTask=require('../models/tasks')
 
 
@@ -9,10 +8,9 @@ const assignTask=require('../models/tasks')
 
 const registerProfile = async (req, res) => {
     try {
-        const { name, email, age, birthDate, nic, password, parentName, phoneNumber } = req.body;
+        const { name, email, age, birthDate, nic, parentName, phoneNumber } = req.body;
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10); // 10 is the number of salt rounds
+  
 
         const newProfile = new RegisterProfile({
             name,
@@ -20,7 +18,6 @@ const registerProfile = async (req, res) => {
             age,
             birthDate,
             nic,
-            password: hashedPassword, // Store the hashed password
             parentName,
             phoneNumber
         });
