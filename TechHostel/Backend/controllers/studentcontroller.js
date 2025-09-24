@@ -2,6 +2,10 @@
 const studentmodel = require('../models/usermodel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const loginmodel = require("../models/loginmodel");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 
 
@@ -64,48 +68,59 @@ const Login = async (req, res) => {
 };
 
 
-const getProfile = async (req, res) => {
-    try {
-      const user = await studentmodel.findById(req.user.id); // Assuming user is authenticated and user information is available in req.user
-  
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-  
-      res.status(200).json({
-        user
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        success: false,
-        error,
-        message: "Internal server error",
-      });
-    }
-  };
-  
+const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
 
-  
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const email = payload.email;
+
+    const student = await studentmodel.findOne({ email });
+    if (!student) {
+      return res.status(401).json({ message: "You are not registered by the warden" });
+    }
+
+    // ✅ create session
+    req.session.userId = student._id;
+
+    res.json({ message: "Student login success", student });
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: "Google login failed" });
+  }
+};
+
+// Fetch profile via session
+const getProfile = async (req, res) => {
+  try {
+    const student = await studentmodel.findById(req.session.userId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    res.json({ user: student });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error fetching profile" });
+  }
+};
 
 
 
 
   const createstudentLogin = async (req, res) => {
       try {
-          const { email, password } = req.body;
+          const { email } = req.body;
   
-          // Hash the password
-          const hashedPassword = await bcrypt.hash(password, 10);
-  
+         const role="student";
           // Create a new login profile with hashed password
-          const newProfile = new studentmodel({
+          const newProfile = new loginmodel({
               email,
-              password: hashedPassword, // Save the hashed password
-              
+              role,
           });
   
           // Save the new profile
@@ -118,4 +133,4 @@ const getProfile = async (req, res) => {
       }
   };
 
-  module.exports={createstudentLogin,Login,getProfile}
+  module.exports={createstudentLogin,Login,getProfile,googleLogin}
