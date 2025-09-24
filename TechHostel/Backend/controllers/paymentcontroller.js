@@ -156,9 +156,6 @@ const updateExpense = async (req, res) => {
 const { body, validationResult } = require("express-validator");
 const mongoSanitize = require("express-mongo-sanitize");
 
-// Middleware to sanitize body
-app.use(mongoSanitize());
-
 const verificationDetails = async (req, res) => {
   try {
     // Validate user input
