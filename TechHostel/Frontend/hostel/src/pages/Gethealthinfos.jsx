@@ -4,6 +4,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import '../css/healthtable.css'; // Import the CSS file
 import Navbar5 from '../components/Navbar5';
 import Footer from '../components/Footer';
+import { SafeText } from '../components/SafeRender';
 
 const HealthInfoTable = () => {
   const [healthInfos, setHealthInfos] = useState([]);
@@ -47,9 +48,9 @@ const HealthInfoTable = () => {
         <tbody>
           {healthInfos.map((info) => (
             <tr key={info._id}>
-              <td>{info.title}</td>
-              <td>{info.description}</td>
-              <td>{info.category}</td>
+              <td><SafeText text={info.title} /></td> {/* Fixed: Use SafeText */}
+                <td><SafeText text={info.description} /></td> {/* Fixed: Use SafeText */}
+                <td><SafeText text={info.category} /></td> {/* Fixed: Use SafeText */}
               <td>
                 <button onClick={() => handleDelete(info._id)}><FaTrash /></button>
                 <button><FaEdit /></button>
