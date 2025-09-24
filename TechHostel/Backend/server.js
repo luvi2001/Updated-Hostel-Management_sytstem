@@ -9,6 +9,14 @@ const xssClean = require('xss-clean'); // Prevent XSS attacks
 const mongoSanitize = require('express-mongo-sanitize'); // Prevent Mongo injection
 
 const app = express();
+// Rate limiter for authentication routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests, try again later'
+});
 
 // Import routes
 const wardenRoutes = require('./routes/warden');
@@ -27,6 +35,20 @@ app.use(helmet());
 // Prevent HTTP Parameter Pollution
 app.use(hpp());
 
+// 🔹 Session middleware (for student logins only)
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'supersecretkey',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: {
+      httpOnly: true,
+      secure: false, // change to true if using https
+      maxAge: 1000 * 60 * 60 * 2, // 2 hours
+    },
+  })
+);
 
 // Prevent XSS attacks
 app.use(xssClean());
@@ -89,7 +111,7 @@ app.get('/gf', (req, res) => res.send("Welcome to project Tech?Hostel"));
 
 app.use('/api/warden', wardenRoutes);
 app.use('/api/security', securityRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/fstaff', fstaffRoutes);
 app.use('/api/student', studentRoutes);
