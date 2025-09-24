@@ -35,7 +35,7 @@ const healthInfoController = {
       console.error(error);
       res.status(500).json({
         success: false,
-        error,
+        error: error.message,
         message: "Internal server error",
       });
     }
@@ -51,7 +51,7 @@ const healthInfoController = {
       console.error(error);
       res.status(500).json({
         success: false,
-        error,
+        error: error.message,
         message: "Internal server error",
       });
     }
@@ -78,7 +78,7 @@ const healthInfoController = {
       console.error(error);
       res.status(500).json({
         success: false,
-        error,
+        error: error.message,
         message: "Internal server error",
       });
     }
