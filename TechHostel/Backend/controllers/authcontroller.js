@@ -44,7 +44,7 @@ const loginValidate = async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
   }
   
@@ -75,7 +75,7 @@ const loginValidate = async (req, res) => {
           res.status(201).json({ message: 'Login profile created', data: newProfile });
       } catch (err) {
           console.error(err);
-          res.status(500).json({ message: 'Internal server error' });
+          res.status(500).json({ message: 'Internal server error', error: err.message });
       }
   };
 
