@@ -7,7 +7,7 @@ const getAllTasks = async (req, res) => {
     res.status(200).json(tasks);
   } catch (error) {
     console.error("Error fetching tasks:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -29,7 +29,7 @@ const jobDone = async (req, res) => {
     }
   } catch (error) {
     console.error('Error updating task status:', error);
-    res.status(500).json({ error: 'Something went wrong' });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
@@ -51,7 +51,7 @@ const jobNotDone = async (req, res) => {
     }
   } catch (error) {
     console.error('Error updating task status:', error);
-    res.status(500).json({ error: 'Something went wrong' });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 
