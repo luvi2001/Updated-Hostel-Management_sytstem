@@ -1,9 +1,6 @@
-
 const studentmodel = require('../models/usermodel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-
 
 const Login = async (req, res) => {
   try {
@@ -35,12 +32,18 @@ const Login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, },
+      { id: user._id },
       process.env.JWT_SECRET,
-      {
-        // expiresIn: "1h",
-      }
+      { expiresIn: "24h" } // ADD expiration
     );
+
+    // SET HTTPONLY COOKIE instead of sending token in response body
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
 
     res.status(200).json({
       success: true,
@@ -50,7 +53,7 @@ const Login = async (req, res) => {
         email: user.email,
         role: user.role,
       },
-      token,
+      // REMOVED: token from response body
       message: "Logged in successfully",
     });
   } catch (error) {
@@ -63,59 +66,71 @@ const Login = async (req, res) => {
   }
 };
 
+// ADD LOGOUT FUNCTION
+const Logout = async (req, res) => {
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
+    
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully"
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Logout failed"
+    });
+  }
+};
 
 const getProfile = async (req, res) => {
-    try {
-      const user = await studentmodel.findById(req.user.id); // Assuming user is authenticated and user information is available in req.user
-  
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-  
-      res.status(200).json({
-        user
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
+  try {
+    const user = await studentmodel.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        error,
-        message: "Internal server error",
+        message: "User not found",
       });
     }
-  };
-  
 
-  
+    res.status(200).json({
+      user
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error,
+      message: "Internal server error",
+    });
+  }
+};
 
+const createstudentLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
 
+    const newProfile = new studentmodel({
+      email,
+      password: hashedPassword,
+    });
 
-  const createstudentLogin = async (req, res) => {
-      try {
-          const { email, password } = req.body;
-  
-          // Hash the password
-          const hashedPassword = await bcrypt.hash(password, 10);
-  
-          // Create a new login profile with hashed password
-          const newProfile = new studentmodel({
-              email,
-              password: hashedPassword, // Save the hashed password
-              
-          });
-  
-          // Save the new profile
-          await newProfile.save();
-  
-          res.status(201).json({ message: 'Login profile created', data: newProfile });
-      } catch (err) {
-          console.error(err);
-          res.status(500).json({ message: 'Internal server error' });
-      }
-  };
+    await newProfile.save();
 
-  module.exports={createstudentLogin,Login,getProfile}
+    res.status(201).json({ message: 'Login profile created', data: newProfile });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// UPDATE EXPORTS
+module.exports = { createstudentLogin, Login, getProfile, Logout };

@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors package
 const app = express();
-
+const cookieParser = require('cookie-parser'); 
 const wardenRoutes = require('./routes/warden');
 const securityRoutes = require('./routes/security');
 const authRoutes = require('./routes/auth');
@@ -12,6 +12,9 @@ const paymentRoutes = require('./routes/payment');
 const fstaffRoutes=require('./routes/fstaff')
 const studentRoutes=require('./routes/student')
 const healthInfoRoutes=require('./routes/healthInfoRoutes')
+
+app.use(cookieParser());
+app.use(xssSanitize);
 
 app.use(express.json());
 app.use(cors({
@@ -39,7 +42,7 @@ app.use((req, res, next) => {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   
   next();
-});
+})
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
