@@ -8,23 +8,25 @@ function StudentProf() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    // Fetch student profile using the token from local storage
-    const token = localStorage.getItem('token');
-    if (token) {
-      const fetchProfile = async () => {
-        try {
-          const response = await axios.get('/api/student/profile', {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          console.log(response.data)
-          setProfile(response.data);
-        } catch (error) {
-          console.error('Error fetching student profile:', error);
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get('/api/student/profile', {
+          withCredentials: true  
+        });
+        console.log(response.data)
+        setProfile(response.data);
+      } catch (error) {
+        console.error('Error fetching student profile:', error);
+        // Redirect to login if unauthorized
+        if (error.response?.status === 401) {
+          window.location.href = '/stlog';
         }
-      };
-      fetchProfile();
-    }
+      }
+    };
+    
+    fetchProfile();
   }, []);
+
 
   return (
     <>
