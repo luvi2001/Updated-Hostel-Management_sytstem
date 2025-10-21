@@ -9,31 +9,33 @@ function Studentlogin({}) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const onLogin = (user, token) => {
-    // Your login logic here
+  const onLogin = (user) => {  // ← REMOVE token parameter
     console.log('User logged in:', user);
-    console.log('Token:', token);
-  
-    // Example: Storing user data and token in local storage
+    
+    // Store ONLY user info in localStorage (no token!)
     localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('token', token);
-  
-    // Example: Redirecting to a dashboard page
+    // REMOVED: localStorage.setItem('token', token); ← DELETE THIS LINE
+    
     navigate("/getprof");
   };
 
   const handleLogin = async () => {
     try {
-        const response = await axios.post('/api/student/log', { email, password });
-        console.log('Response:', response); // Log the response to see its structure
-        const { user, token } = response.data; // Check if response.data is defined
+        const response = await axios.post('/api/student/log', 
+          { email, password }, 
+          { withCredentials: true }  // ← ADD THIS - sends/receives cookies
+        );
+        console.log('Response:', response);
+        
+        // Token is now in HttpOnly cookie, NOT in response
+        const { user } = response.data; // ← NO MORE token in response
         console.log('User:', user);
-        console.log('Token:', token);
-        onLogin(user, token);
+        
+        onLogin(user); // ← Pass only user, no token
         
       } catch (error) {
         console.error('Login error:', error);
-        setError(error.response.data.message);
+        setError(error.response?.data?.message || 'Login failed');
       }
   };
 
