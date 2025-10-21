@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const xssSanitize = require('./middleware/sanitize');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors package
@@ -15,10 +15,31 @@ const healthInfoRoutes=require('./routes/healthInfoRoutes')
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from localhost:3000
-  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+  origin: 'http://localhost:3000', 
+  credentials: true 
 }));
 
+app.use((req, res, next) => {
+  // Anti-clickjacking headers
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Content-Security-Policy', 
+  "frame-ancestors 'none'; " +
+  "default-src 'self'; " +
+  "script-src 'self'; " +
+  "style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' data:; " +
+  "font-src 'self'; " +
+  "connect-src 'self'; " +
+  "object-src 'none'; " +
+  "base-uri 'self'"
+);
+  
+  // Additional security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  
+  next();
+});
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
