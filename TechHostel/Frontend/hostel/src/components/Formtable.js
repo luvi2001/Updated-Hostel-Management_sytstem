@@ -8,7 +8,7 @@ const Formtable = ({handleSubmit,handleOnChange,handleclose,rest}) => {
     <form onSubmit={handleSubmit}>
     <div className="close-btn" onClick={handleclose}><IoCloseSharp /></div>
       <label htmlFor="name">Name : </label>
-      <input type = "text" id = "name" name="name" onChange={handleOnChange} value={rest.name} readOnly />
+      <input type = "text" id = "name" name="name" onChange={handleOnChange} value={rest.name} />
 
       <label htmlFor="mobile">NIC : </label>
       <input type = "text" id = "mobile" name="nic" onChange={handleOnChange} value={rest.nic} 
@@ -16,7 +16,7 @@ const Formtable = ({handleSubmit,handleOnChange,handleclose,rest}) => {
               pattern="[0-9]{12}"
               maxLength="12"
               minLength="12"
-              title="Please enter a 10-digit telephone number" readOnly/>
+              title="Please enter a 10-digit telephone number" />
 
       <label htmlFor="issue">Issue : </label>
       <input type = "text" id = "issue" name="issue" onChange={handleOnChange} value={rest.issue} 

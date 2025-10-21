@@ -6,6 +6,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Navbar3 from "../components/Navbar3";
 import Footer from '../components/Footer';
+import { safeRender, sanitizeInput } from '../utils/sanitize';
 
 
 axios.defaults.baseURL = "http://localhost:8000/"
@@ -206,18 +207,21 @@ const downloadPDF = () => {
           <tbody>
           {filteredDataList.length > 0 ? (
               filteredDataList.map((el) => {
-                return (
-                  <tr key={el._id}>
-                    <td>{el.nic}</td>
-                    <td>{el.name}</td>
-                    <td>{el.issue}</td>
-                    <td>{el.amount}</td>
-                    <td>
-                      <button className='btn btn-edit' onClick={() => handleEdit(el)
-                      }>Edit</button><br/><br/>
-                      <button className='btn btn-delete' onClick={() => handleDelete(el._id)}>Delete</button>
-                    </td>
-                  </tr>
+                 const safeName = sanitizeInput(el.name);
+                  const safeNic = sanitizeInput(el.nic);
+                  const safeIssue = sanitizeInput(el.issue);
+                  
+                  return (
+                    <tr key={el._id}>
+                      <td>{safeNic}</td>
+                      <td>{safeName}</td>
+                      <td>{safeIssue}</td>
+                      <td>{el.amount}</td>
+                      <td>
+                        <button className='btn btn-edit' onClick={() => handleEdit(el)}>Edit</button>
+                        <button className='btn btn-delete' onClick={() => handleDelete(el._id)}>Delete</button>
+                      </td>
+                    </tr>
                 );
               })
             ) : (
