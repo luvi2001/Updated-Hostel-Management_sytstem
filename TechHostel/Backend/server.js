@@ -6,8 +6,21 @@ const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet'); // ✅ Added for security headers
 
 const app = express();
+
+// ✅ Add Helmet middleware (automatically sets X-Content-Type-Options: nosniff)
+app.use( ({
+  contentSecurityPolicy: false, // disable CSP if not configured
+}));
+
+// OR (optional fallback if you want manual addition too)
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  next();
+});
+
 // Rate limiter for authentication routes
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
