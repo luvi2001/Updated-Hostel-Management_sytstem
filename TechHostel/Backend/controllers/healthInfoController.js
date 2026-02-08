@@ -1,5 +1,6 @@
 const HealthInfo = require("../models/HealthInfo");
 const { z } = require("zod");
+const validator = require('validator');
 
 const createHealthInfoSchema = z.object({
   title: z.string(),
@@ -13,6 +14,15 @@ const healthInfoController = {
     try {
       const { title, description, category } = req.body;
       //const author = req.userId;
+
+       // Server-side sanitization
+      title = validator.escape(validator.trim(title || ''));
+      description = validator.escape(validator.trim(description || ''));
+      category = validator.escape(validator.trim(category || ''));
+
+      // Remove any remaining dangerous patterns
+      title = title.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+      description = description.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 
       // validation
       createHealthInfoSchema.parse(req.body);
@@ -46,6 +56,14 @@ const healthInfoController = {
     try {
       const healthInfos = await HealthInfo.find()
 
+      // Sanitize output
+      const sanitizedHealthInfos = healthInfos.map(info => ({
+        ...info._doc,
+        title: validator.escape(info.title),
+        description: validator.escape(info.description),
+        category: validator.escape(info.category)
+      }));
+      
       res.status(200).json({ success: true, healthInfos });
     } catch (error) {
       console.error(error);
