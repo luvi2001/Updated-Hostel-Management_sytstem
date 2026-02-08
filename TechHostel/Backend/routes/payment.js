@@ -1,17 +1,35 @@
-const express =require('express')
+const express = require('express');
+const {
+  ewalletCreate,
+  addExpenses,
+  getExpense,
+  createExpense,
+  deleteExpense,
+  updateExpense,
+  verificationDetails,
+  getPaymentVerification,
+  getSinglePaymentVerification
+} = require('../controllers/paymentcontroller');
 
-const { ewalletCreate,addExpenses, getExpense, createExpense, deleteExpense, updateExpense, verificationDetails}= require('../controllers/paymentcontroller')
+const router = express.Router();
 
-const router=express.Router()
+// Ewallet
+router.post('/ewallet/create', ewalletCreate);
 
+// Expenses
+router.get('/expense/list', getExpense);
+router.post('/expense/init', addExpenses);
+router.post('/expense/add', createExpense);
+router.delete('/expense/delete/:id', deleteExpense);
+router.put('/expense/update/:id', updateExpense);
 
-router.post('/createewallet',ewalletCreate)
-router.get('/getexpense',getExpense)
-router.post('/createexpense',addExpenses)
-router.post('/expenseadd',createExpense)
-router.delete('/delete/:id',deleteExpense)
-router.put('/update',updateExpense)
-router.post('/verify',verificationDetails)
+// Payment Verification
+router.post('/payment/verify', verificationDetails);
 
+// Get all payment verifications
+router.get('/payment/verify', getPaymentVerification);
 
-module.exports= router
+// Get single payment verification by ID
+router.get('/payment/verify/:id', getSinglePaymentVerification);
+
+module.exports = router;

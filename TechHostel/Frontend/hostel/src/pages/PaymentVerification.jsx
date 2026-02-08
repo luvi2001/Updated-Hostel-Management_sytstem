@@ -6,6 +6,12 @@ import "../css/register.css";
 import Navbar4 from "../components/Navbar4";
 import Footer from "../components/Footer";
 
+// 🔒 sanitize function (basic filter for MongoDB/HTML injection)
+const sanitizeInput = (value) => {
+  if (typeof value !== "string") return value;
+  return value.replace(/[${}<>;]/g, ""); // strip dangerous chars
+};
+
 const PaymentVerification = () => {
   const [formData, setFormData] = useState({
     studentName: "",
@@ -18,11 +24,32 @@ const PaymentVerification = () => {
 
   const [studentInfo, setStudentInfo] = useState(null);
   const [error, setError] = useState("");
+<<<<<<< HEAD
+=======
 
   // ✅ Ensure axios always sends cookies
   axios.defaults.withCredentials = true;
+>>>>>>> c83a12075bb183651b580f0a8ed97219f1455880
 
+  // ✅ Fetch student info from backend using token
   useEffect(() => {
+<<<<<<< HEAD
+    const token = localStorage.getItem("token");
+    if (token) {
+      const fetchStudentInfo = async () => {
+        try {
+          const response = await axios.get("/api/student/profile", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setStudentInfo(response.data.user);
+        } catch (error) {
+          console.error("Error fetching student info:", error);
+          setError("Error fetching student info");
+        }
+      };
+      fetchStudentInfo();
+    }
+=======
     const fetchStudentInfo = async () => {
       try {
         const response = await axios.get("/api/student/profile", {
@@ -36,23 +63,52 @@ const PaymentVerification = () => {
     };
 
     fetchStudentInfo();
+>>>>>>> c83a12075bb183651b580f0a8ed97219f1455880
   }, []);
 
+  // ✅ Handle form change securely
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    let value = e.target.value;
+
+    // sanitize inputs
+    if (e.target.name === "amount") {
+      // allow only numbers
+      value = value.replace(/[^0-9.]/g, "");
+    } else {
+      value = sanitizeInput(value);
+    }
+
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
+  // ✅ Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+<<<<<<< HEAD
+      const response = await axios.post("/api/payment/verify", formData);
+=======
       // ✅ Include cookies in POST as well
       const response = await axios.post("/api/payment/verify", formData, {
         withCredentials: true,
       });
+>>>>>>> c83a12075bb183651b580f0a8ed97219f1455880
 
       if (response.data.success) {
-        window.alert("Payment details added successfully!");
+        window.alert("✅ Payment details added successfully!");
+        setFormData({
+          studentName: "",
+          nicNumber: "",
+          accountNumber: "",
+          bank: "",
+          amount: "",
+          date: "",
+        });
+      } else {
+        window.alert("❌ Error: " + (response.data.error || "Invalid data"));
       }
+<<<<<<< HEAD
+=======
 
       // Reset form
       setFormData({
@@ -63,6 +119,7 @@ const PaymentVerification = () => {
         amount: "",
         date: "",
       });
+>>>>>>> c83a12075bb183651b580f0a8ed97219f1455880
     } catch (error) {
       console.error("Error submitting payment details:", error);
       setError("Error submitting payment details");
@@ -97,6 +154,10 @@ const PaymentVerification = () => {
                   type="text"
                   name="nicNumber"
                   value={studentInfo.nic}
+<<<<<<< HEAD
+                  maxLength="12"
+=======
+>>>>>>> c83a12075bb183651b580f0a8ed97219f1455880
                   readOnly
                   required
                 />
@@ -128,10 +189,11 @@ const PaymentVerification = () => {
           <label>
             Amount:
             <input
-              type="text"
+              type="number"
               name="amount"
               value={formData.amount}
               onChange={handleChange}
+              min="1"
               required
             />
           </label>
@@ -147,6 +209,13 @@ const PaymentVerification = () => {
           </label>
           <button type="submit">Submit</button>
         </form>
+<<<<<<< HEAD
+
+        {error && <p className="error-message">{error}</p>}
+      </div>
+      <br />
+      <br />
+=======
       </div>
       <br />
       <br />
@@ -162,6 +231,7 @@ const PaymentVerification = () => {
       <br />
       <br />
       <br />
+>>>>>>> c83a12075bb183651b580f0a8ed97219f1455880
       <Footer />
     </>
   );

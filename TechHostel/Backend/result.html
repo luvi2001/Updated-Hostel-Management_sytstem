@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Trivy Vulnerability Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { background-color: #f2f2f2; text-align: left; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    .high { color: red; font-weight: bold; }
+    .medium { color: orange; }
+    .low { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Trivy Vulnerability Report</h1>
+    <h2>Target: package-lock.json</h2>
+      <table>
+        <tr>
+          <th>Package</th>
+          <th>Version</th>
+          <th>Vulnerability ID</th>
+          <th>Severity</th>
+          <th>Title</th>
+          <th>Fixed Version</th>
+        </tr>
+        <tr>
+          <td>body-parser</td>
+          <td>1.20.2</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-45590" target="_blank">CVE-2024-45590</a></td>
+          <td class="high">HIGH</td>
+          <td>body-parser: Denial of Service Vulnerability in body-parser</td>
+          <td>1.20.3</td>
+        </tr>
+        <tr>
+          <td>brace-expansion</td>
+          <td>1.1.11</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2025-5889" target="_blank">CVE-2025-5889</a></td>
+          <td class="low">LOW</td>
+          <td>brace-expansion: juliangruber brace-expansion index.js expand redos</td>
+          <td>2.0.2, 1.1.12, 3.0.1, 4.0.1</td>
+        </tr>
+        <tr>
+          <td>braces</td>
+          <td>3.0.2</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-4068" target="_blank">CVE-2024-4068</a></td>
+          <td class="high">HIGH</td>
+          <td>braces: fails to limit the number of characters it can handle</td>
+          <td>3.0.3</td>
+        </tr>
+        <tr>
+          <td>cookie</td>
+          <td>0.5.0</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-47764" target="_blank">CVE-2024-47764</a></td>
+          <td class="low">LOW</td>
+          <td>cookie: cookie accepts cookie name, path, and domain with out of bounds characters</td>
+          <td>0.7.0</td>
+        </tr>
+        <tr>
+          <td>express</td>
+          <td>4.18.3</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-29041" target="_blank">CVE-2024-29041</a></td>
+          <td class="medium">MEDIUM</td>
+          <td>express: cause malformed URLs to be evaluated</td>
+          <td>4.19.2, 5.0.0-beta.3</td>
+        </tr>
+        <tr>
+          <td>express</td>
+          <td>4.18.3</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-43796" target="_blank">CVE-2024-43796</a></td>
+          <td class="low">LOW</td>
+          <td>express: Improper Input Handling in Express Redirects</td>
+          <td>4.20.0, 5.0.0</td>
+        </tr>
+        <tr>
+          <td>mongodb</td>
+          <td>4.1.4</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2021-32050" target="_blank">CVE-2021-32050</a></td>
+          <td class="medium">MEDIUM</td>
+          <td>Some MongoDB Drivers may erroneously publish events containing authent ...</td>
+          <td>3.6.10, 4.17.0, 5.8.0</td>
+        </tr>
+        <tr>
+          <td>mongoose</td>
+          <td>8.2.2</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2025-23061" target="_blank">CVE-2025-23061</a></td>
+          <td class="critical">CRITICAL</td>
+          <td>Mongoose search injection vulnerability</td>
+          <td>8.9.5, 7.8.4, 6.13.6</td>
+        </tr>
+        <tr>
+          <td>mongoose</td>
+          <td>8.2.2</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-53900" target="_blank">CVE-2024-53900</a></td>
+          <td class="high">HIGH</td>
+          <td>Mongoose search injection vulnerability</td>
+          <td>8.8.3, 7.8.3, 6.13.5</td>
+        </tr>
+        <tr>
+          <td>path-to-regexp</td>
+          <td>0.1.7</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-45296" target="_blank">CVE-2024-45296</a></td>
+          <td class="high">HIGH</td>
+          <td>path-to-regexp: Backtracking regular expressions cause ReDoS</td>
+          <td>1.9.0, 0.1.10, 8.0.0, 3.3.0, 6.3.0</td>
+        </tr>
+        <tr>
+          <td>path-to-regexp</td>
+          <td>0.1.7</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-52798" target="_blank">CVE-2024-52798</a></td>
+          <td class="high">HIGH</td>
+          <td>path-to-regexp: path-to-regexp Unpatched `path-to-regexp` ReDoS in 0.1.x</td>
+          <td>0.1.12</td>
+        </tr>
+        <tr>
+          <td>send</td>
+          <td>0.18.0</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-43799" target="_blank">CVE-2024-43799</a></td>
+          <td class="low">LOW</td>
+          <td>send: Code Execution Vulnerability in Send Library</td>
+          <td>0.19.0</td>
+        </tr>
+        <tr>
+          <td>serve-static</td>
+          <td>1.15.0</td>
+          <td><a href="https://avd.aquasec.com/nvd/CVE-2024-43800" target="_blank">CVE-2024-43800</a></td>
+          <td class="low">LOW</td>
+          <td>serve-static: Improper Sanitization in serve-static</td>
+          <td>1.16.0, 2.1.0</td>
+        </tr>
+      </table>
+</body>
+</html>
